@@ -1,4 +1,4 @@
-"""E_Commerce URL Configuration
+"""erp URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -14,18 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path ,include
-from . import views
+from django.urls import include, path
 
 urlpatterns = [
-    path('',views.home , name ='index'), 
-    path('about/',views.about , name ='about'), 
+    path('', include('login.urls')),
     path('admin/', admin.site.urls),
-    path('Shop/', include('Shop.urls')),
-    path('Blog/', include('Blog.urls')),
+    
 ]
-
-
-
-
-
