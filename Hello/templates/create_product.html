@@ -1,0 +1,28 @@
+<html>
+    <body>   
+            <h2>All Product List for</h2>
+            <table border="1" width="300">
+                <tr>
+                    <td>Product Name</td>
+                </tr>
+                {% for fp in final_products  %}
+                <div>
+                    <tr>
+
+                        <td>
+                            <h2><a href="/fp/get/{{ fp.id }}/">{{ fp.name }}</a></h2>
+                        </td>
+                    </tr>
+                </div>
+                    {% endfor %}
+            </table>         
+            <h4>Add Compents to Final Product </h4>
+            <div>
+                <form action="/fp/create_product/" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                    {{ form.as_p }}                   
+                    <input type="submit" name="submit" value="Add Product">
+                    <a href="/fp/all">Cancel</a> 
+                </form>
+            </div>
+    </body>
+</html>

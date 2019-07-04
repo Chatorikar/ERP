@@ -1,0 +1,43 @@
+<html>
+    <body>   
+            <h1>All Components List for {{model}}</h1>
+            <table border="1" width="1500">
+                <tr>
+                    <td>Part Name</td>
+                    <td>Part Number</td>
+                    <td>Primary Stock Unit</td>
+                    <td>Purchase Stock Unit</td>
+                    <td>Material</td>
+                    <td>type_of_production</td>
+                    <td>Cost</td>
+                    <td>Drawing</td>
+                </tr>
+                {% for comp in components %}
+                <div>
+                    <tr>
+                        <!-- td><h2><a href="/fp/get_component_info/{{ comp.id }}/">{{ comp.Model_name }}</a></h2></td -->
+                        <td>{{ comp.Part_name }}</td>
+                        <td>{{ comp.Part_Number }}</td>
+                        <td>{{ comp..Primary_Stock_Unit }}</td>
+                        <td>{{ comp.Purchase_Stock_Unit }}</td>
+                        <td>{{ comp.Material }}</td>
+                        <td>{{ comp.type_of_production }}</td>
+                        <td>{{ comp.cost }}</td>
+                        <td>{{ comp.document }}</td>
+                    </tr>
+                {% endfor %}
+            </table>          
+        <h1>Add Component to Final Product </h1>
+        <div>
+            <form action="/fp/create_component/{{ model.id }}/" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" name="submit" value="Add New Components ">
+            </form>
+            <div>
+                <ul>
+                    <li><a href="/fp/all">Cancel</a></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>
