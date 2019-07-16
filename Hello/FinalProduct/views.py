@@ -65,8 +65,8 @@ def create_component(request, final_product_id=1):
         else:
             #Finalproduct.objects.add(Components.objects.get(Part_name = request.POST['Part_name']))
             new_instance_of_component = deepcopy(Components_obj)
-            print("else ================>")
-            print(new_instance_of_component)
+            
+            #print(new_instance_of_component)
             new_instance_of_component.Cheack_for_Allocation = True
             new_instance_of_component.Rawmaterial_list.all().delete()
             new_instance_of_component.save()
@@ -197,10 +197,10 @@ def update_quantity_raw_material(request,component_id=1):
         elif Comp_obj.Rawmaterial_list == "":
             Comp_obj.Rawmaterial_list = {raw_material_name: raw_material_quantity}
         else:
+            print(Comp_obj.Rawmaterial_list)
             Comp_obj.Rawmaterial_list[raw_material_name] = raw_material_quantity
         Comp_obj.save()
-        return HttpResponseRedirect("/fp/get_component_info/" + component_id)
-        
+        return HttpResponseRedirect("/fp/get_component_info/" + component_id)      
 
 '''
 def index(request):
