@@ -44,10 +44,9 @@
 
             <h4>Add Compents {{component.Part_name}} </h4>
             <div>
-                <form action="/fp/Update_Raw_Material/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}
-                   {% csrf_token %}
-       <label for="Raw_Material_list">Choose Raw Material</label>
-       <input list="Raw_Material" , name="Inventary_ID" id="Inventary_ID">
+                <form action="/fp/Update_Raw_Material/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}{% csrf_token %}
+                    <label for="Raw_Material_list">Choose Raw Material</label>
+                    <input list="Raw_Material" , name="Inventary_ID" id="Inventary_ID">
             
             <datalist id="Raw_Material">
                 {% for I in Inventary %}

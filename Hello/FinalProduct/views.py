@@ -72,7 +72,7 @@ def create_component(request, final_product_id=1):
             else:
                 form = CreateComponent()
         else:
-            #Finalproduct.objects.add(Components.objects.get(Part_name = request.POST['Part_name']))
+            # Finalproduct.objects.add(Components.objects.get(Part_name = request.POST['Part_name']))
             new_instance_of_component = deepcopy(Components_obj)
 
             # print(new_instance_of_component)
@@ -83,7 +83,7 @@ def create_component(request, final_product_id=1):
             Finalproduct.objects.get(id=final_product_id).component_list.add(
                 new_instance_of_component)
 
-            #Finalproduct.objects.get(id=final_product_id).component_list.add(Components.objects.get(Part_name = request.POST['Part_name']))
+            # Finalproduct.objects.get(id=final_product_id).component_list.add(Components.objects.get(Part_name = request.POST['Part_name']))
             return HttpResponseRedirect('/fp/get_components/' + str(final_product_id))
 
     args = {}
@@ -104,15 +104,22 @@ def components_list_id(request, components_id=1):
 
 def create_process(request, component_id=1):
     if request.POST:
+        print("*********POST*****")
+        print(request.POST)
         form = CreateProcess(request.POST, request.FILES)
         form_1 = CreateProcess()
+        # Components.objects.get(id=component_id).process_list.add(
+        # Process.objects.get(name=request.POST['Process_ID']))
+
         if form.is_valid():
             form.save()
+            print("*********if*****")
             Components.objects.get(id=component_id).process_list.add(
                 Process.objects.latest('pk'))
             # Will add Recently add new components object from Components Class
             return HttpResponseRedirect('/fp/get_component_info/' + str(component_id))
     else:
+        print("*********else*****")
         form = CreateProcess()
     args = {}
     args.update(csrf(request))
@@ -121,7 +128,38 @@ def create_process(request, component_id=1):
     args['process_list'] = Components.objects.get(
         id=component_id).process_list.all()
     args['All_Process_List'] = Process.objects.all()
-    return render_to_response('process_list_of_particular_component.html', args)
+    return render_to_response('Chainsetup.html', args)
+    # return render_to_response('process_list_of_particular_component.html', args)
+
+
+def Add_Process_to_Component(request, component_id=1):
+    if request.POST:
+        print("*********POST*****")
+        print(request.POST)
+        form = CreateProcess(request.POST, request.FILES)
+        form_1 = CreateProcess()
+        Components.objects.get(id=component_id).process_list.add(
+            Process.objects.get(name=request.POST['Process_ID']))
+
+        if form.is_valid():
+            form.save()
+            print("*********if*****")
+            # Components.objects.get(id=component_id).process_list.add(
+            #     Process.objects.latest('pk'))
+            # Will add Recently add new components object from Components Class
+            return HttpResponseRedirect('/fp/Add_Process_to_Component/' + str(component_id))
+    else:
+        print("*********else*****")
+        form = CreateProcess()
+    args = {}
+    args.update(csrf(request))
+    args.update({'form': form})
+    args.update({'component': Components.objects.get(id=component_id)})
+    args['process_list'] = Components.objects.get(
+        id=component_id).process_list.all()
+    args['All_Process_List'] = Process.objects.all()
+    return render_to_response('Chainsetup.html', args)
+    # return render_to_response('process_list_of_particular_component.html', args)
 
 
 def get_components_details(request, component_id=1):
@@ -133,7 +171,12 @@ def get_components_details(request, component_id=1):
 
 def get_process_details_paticular_component(request, component_id=1):
     return render_to_response('process_list_of_particular_component.html', {'All_Process': Components.objects.get(id=component_id).process_list.all(),
+
                                                                             'component': Components.objects.get(id=component_id)})
+
+
+# def Add_Process_to_Component():
+#     pass
 
 
 def Process_List(request):

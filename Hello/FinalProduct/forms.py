@@ -2,7 +2,6 @@ from django import forms
 from .models import *
 
 
-
 class CreateProduct(forms.ModelForm):
     class Meta:
         model = Finalproduct
@@ -10,21 +9,24 @@ class CreateProduct(forms.ModelForm):
             'name',
         ]
 
+
 class CreateComponent(forms.ModelForm):
     class Meta:
         model = Components
-        fields =[
-             'Part_name' , 'Part_Number' , 'Primary_Stock_Unit' , 
-            'Purchase_Stock_Unit' , 'Material'  , 'type_of_production' , 'cost' , 
-            'document' , 'Cheack_for_Allocation'
-            
+        fields = [
+            'Part_name', 'Part_Number', 'Primary_Stock_Unit',
+            'Purchase_Stock_Unit', 'Material', 'type_of_production', 'cost',
+            'document', 'Cheack_for_Allocation'
+
         ]
 
 
 class CreateProcess(forms.ModelForm):
     class Meta:
         model = Process
-        fields = '__all__'
+        fields = [
+            'name'
+        ]
 
 
 class CreateRawMaterial(forms.ModelForm):
@@ -32,17 +34,18 @@ class CreateRawMaterial(forms.ModelForm):
         model = RawMaterial
         fields = '__all__'
 
+
 class CreateRawMaterial_Record(forms.ModelForm):
     class Meta:
         model = RawMaterial
-        fields ='__all__'
+        fields = '__all__'
 
 
 class ProcessForm(forms.Form):
     OPTIONS = (
         ("Cutting", "Cutting"),
         ("Milling", "Milling"),
-      #  ("NLD", "Neitherlands"),
+        #  ("NLD", "Neitherlands"),
     )
     Process = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                          choices=OPTIONS)
+                                        choices=OPTIONS)
