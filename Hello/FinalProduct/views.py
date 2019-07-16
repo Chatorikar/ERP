@@ -57,7 +57,7 @@ def create_component(request, final_product_id=1):
                 instance_of_component.delete()
                 Finalproduct.objects.get(id=final_product_id).component_list.add(new_instance_of_component)
                 #Will add Recentaly add new components object from Components Class
-                print("if    ================>")
+                
                 print(new_instance_of_component)
                 return HttpResponseRedirect('/fp/get_components/' + str(final_product_id))
             else:
