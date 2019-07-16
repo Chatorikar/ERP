@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from FinalProduct import views as viewsFP
+from. import views
 admin.autodiscover()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("" , views.dashboard ),
     path('fp/', include('FinalProduct.urls')),
     
 ]

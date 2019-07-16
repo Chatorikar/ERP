@@ -5,3 +5,5 @@ from .models import *
 admin.site.register(Components)
 admin.site.register(Process)
 admin.site.register(Finalproduct)
+admin.site.register(RawMaterial)
+admin.site.register(RawMaterial_Record)

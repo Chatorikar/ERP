@@ -27,7 +27,7 @@
         <div>
         <table  border="1" width="500" >
         <h1> Process to be done ========</h1>
-             {% for process in All_Process  %}
+             {% for process in process_list  %}
 
             <tr>
                <td><h2> {{ process.name  }} </h2></td>
@@ -42,6 +42,19 @@
                     <input type="submit" name="submit" value="Add Process">
                     <a href="/fp/all">Cancel</a> 
                 </form>
+            </div>
+
+
+            <div>
+                <input list="Raw_Material" , name="Inventary_ID">
+                    
+                    <datalist id="Raw_Material">
+                    {% for pro in All_Process_List %}
+                                <option value="{{pro.name}}"> 
+                    {% endfor %}    
+                    </datalist>
+        
+                    <input type="submit" name="submit" value="Add Process">            
             </div>
     </div> 
 </body>

@@ -1,0 +1,66 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function submission() {
+        var b = null;
+        var test = $("#Inventary_ID").val();
+        {% for item in Inventary %}
+            if("{{ item.name }}" === test)
+                b = parseInt("{{ item.quantity }}", 10)
+        {% endfor %}
+        var value = parseInt($("#quantity").val());
+        if (value >= b){
+            alert("No numbers above " + b);
+            $("#quantity").val(b);
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
+</head>
+
+    <body>   
+            <h2>All Raw Material list for {{component.Part_name}}</h2>
+            <table border="1" width="300">
+                <tr>
+                    <td>Raw Material {{name}} </td>
+                </tr>
+                {% comment %} {% for rm in final_products  %}
+                <div>
+                    <tr>
+
+                        <td>
+                            <h2><a href="/fp/get/{{ fp.id }}/">{{ fp.name }}</a></h2>
+                        </td>
+                    </tr>
+                </div>
+                    {% endfor %} {% endcomment %}
+
+
+            </table>
+
+
+            <h4>Add Compents {{component.Part_name}} </h4>
+            <div>
+                <form action="/fp/Update_Raw_Material/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                   {% csrf_token %}
+       <label for="Raw_Material_list">Choose Raw Material</label>
+       <input list="Raw_Material" , name="Inventary_ID" id="Inventary_ID">
+            
+            <datalist id="Raw_Material">
+                {% for I in Inventary %}
+                    {% if I.flag %}
+                        <option id={{I.id}} value="{{I.name}}">
+                        {% endif %}   
+                {% endfor %}    
+            </datalist>
+        {% comment %} <button onclick="myFunction()">Try it</button><br/> {% endcomment %}
+        Quantity: <input type="number" id="quantity" name="quantity">
+    
+        <input type="submit" name="submit" onclick="return submission()" id="submit_button" value="Assign Raw Material">
+        </form>
+            </div>
+    </body>
+</html>

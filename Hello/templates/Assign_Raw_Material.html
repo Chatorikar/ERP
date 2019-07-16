@@ -1,0 +1,94 @@
+<html>
+
+<body>
+    <h4>Details of {{ component.Part_Number  }}</h4>
+    <table border="1" width="1500">
+        <tr>
+            <td>Part Number</td>
+            <td>Primary Stock Unit</td>
+            <td>Purchase Stock Unit</td>
+            <td>Material</td>
+            <td>type_of_production</td>
+            <td>Cost</td>
+            <td>Drawing</td>
+           
+        </tr>
+       
+        <div>
+            <tr>
+                    <td>{{ component.Part_Number }}</td>
+                    <td>{{ component.Primary_Stock_Unit }}</td>
+                    <td>{{ component.Purchase_Stock_Unit }}</td>
+                    <td>{{ component.Material }}</td>
+                    <td>{{ component.type_of_production }}</td>
+                    <td>{{ component.cost }}</td>
+                    <td>{{ component.document }}</td>
+                    
+            </tr>       
+    </table>
+    <div>
+      <h3> Assign Raw Material </h3>
+      {% comment %} <table border="1" width="500" >
+             {% for process in All_Process  %}
+            <tr>
+               <td><h4> {{ process.name  }} </h4></td>
+                <td><h4> {{ process.status }} </h4></td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <table border="1" width="500" >
+             {% for rm in Raw_Material  %}
+            <tr>
+               <td><h4> {{ rm.name  }} </h4></td>
+               
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+ {% endcomment %}
+
+
+
+
+      {% comment %} <form action="/fp/Create_Raw_Material/" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                    {{ form.as_p  }}  
+                     {% comment %} <button onclick="model_name()" type="button" class="btn btn-primary" >Send message</button>             
+                 <input type="submit" name="submit" value="Add Product"> 
+                    <a href="/fp/rm">Cancel</a> 
+                </form> {% endcomment %}
+
+
+        <h3>Select Raw Material</h3>
+       <form action="/fp/Select_Quantity/" method="post"  enctype="multipart/form-data">
+       {% csrf_token %}
+       <input list="Raw_Material" , name="Inventary_ID">
+            
+            <datalist id="Raw_Material">
+               {% for I in Inventary %}
+                    {% if I.flag %}
+                        <option value="{{I.id}}">{{I.name}} 
+                        {% endif %}   
+                {% endfor %}    
+            </datalist>
+        
+        <input type="submit" name="submit" value="Assign Raw Material">
+
+        </form>
+        {% comment %} <div>
+            <h4><a href="/fp/get_porcess_info/{{ component_id }}/"> Add New Process </a></h4>
+        </div>
+
+        <div>
+            <h4><a href="/fp/get_porcess_info/{{ component_id }}/"> Assign Raw Material </a></h4>
+        </div> {% endcomment %}
+
+        <div>
+            <h4><a href="/fp/all/"> Done </a></h4>
+        </div>
+
+    </div>
+  
+</body>
+
+</html>

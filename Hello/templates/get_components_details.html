@@ -36,9 +36,23 @@
             </tr>
             {% endfor %}
         </table>
+
+        <table border="1" width="500" >
+             {% for rm in Raw_Material  %}
+            <tr>
+               <td><h4> {{ rm.name  }} </h4></td>
+               <td><h4> {{ rm.quantity  }} </h4></td>
+               
+            </tr>
+            {% endfor %}
+        </table>
         </div>
         <div>
             <h4><a href="/fp/get_porcess_info/{{ component_id }}/"> Add New Process </a></h4>
+        </div>
+
+        <div>
+            <h4><a href="/fp/Assign_Raw_Material/{{ component_id }}/"> Assign Raw Material </a></h4>
         </div>
 
         <div>

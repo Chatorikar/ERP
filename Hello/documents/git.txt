@@ -1,0 +1,6 @@
+git status
+git add -A
+git status
+git commit -m 'Update URLS'
+git remote add origin https://github.com/Pratham19Feb/Django.git // Django.git
+git push origin master
