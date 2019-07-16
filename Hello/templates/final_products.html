@@ -1,0 +1,28 @@
+<html>
+
+<body>
+    <h4>All Product List for</h4>
+    <table border="1" width="300">
+        <tr>
+            <td>Product Name</td>
+        </tr>
+        {% for fp in final_products  %}
+        <div>
+            <tr>
+
+                <td>
+                    <h2><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></h2>
+                </td>
+            </tr>
+        </div>
+            {% endfor %}
+    </table>
+
+    <div>
+        <h4><a href="/fp/create_product"> Add More Products </a></h4>
+    </div>
+
+  
+</body>
+
+</html>

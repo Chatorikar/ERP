@@ -1,0 +1,234 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Ved  Engineer</title>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static '../static/img/apple-icon.png' %}">
+  <link rel="icon" type="image/png" href="{% static '../static/img/favicon.png' %}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <title>
+    Material Dashboard by Creative Tim
+  </title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  {% comment %} <link rel="stylesheet" href="{% static 'table_css.css' %}"> {% endcomment %}
+  <!-- CSS Files -->
+  <link href="{% static '../static/css/material-dashboard.css' %}" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="{% static '../static/demo/demo.css' %}" rel="stylesheet" />
+  <style>
+	h2{
+		display: inline-block;
+	}
+	h4{
+		display: inline-block;		
+	}
+	.button {
+		display: inline-block;
+	  background-color:purple;
+	  border: none;
+	  color: white;
+	  padding: 15px 32px;
+	  text-align: center;
+	  text-decoration: none;
+	  margin: 4px 2px;
+	  cursor: pointer;
+	  align:right;
+	  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+	}
+	.button3:hover {font-size: 26px;
+	 box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+	 }
+	#feedback { font-size: 1.4em; }
+	#selectable .ui-selecting { background: #FECA40; }
+	#selectable .ui-selected { background: #F39814; color: white; }
+	#selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+	#selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+  </style>
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
+  <script>
+  $( function() {
+    $( "#selectable" ).selectable();
+  } );
+
+  function model_name()
+  {
+    var str = document.getElementById("recipient-name").value;
+    alert("value "+str)
+  }
+  </script>
+</head>
+
+<body>
+  <div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white">
+      <!--
+      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+      Tip 2: you can also add an image using data-image tag
+  -->
+      <div class="logo">
+        <a href="#" class="simple-text logo-mini">
+          LOGO
+        </a>
+        <a href="#" class="simple-text logo-normal">
+          VED ENGINEER
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item active  ">
+            <a class="nav-link" href="#0">
+              <i class="material-icons">dashboard</i>
+              <p>Button 1</p>
+            </a>
+          </li>
+          <!-- your sidebar here -->
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="#pablo">Dashboard</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#pablo">
+                  <i class="material-icons">notifications</i> Notifications
+                </a>
+              </li>
+              <!-- your navbar here -->
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+    
+          <!-- your content here -->
+            <div class="content">
+        <div class="container-fluid">
+			<span><h2 style="font-family:Helvetica" >New Order</h2> </span>
+			<span  class="float-right"><a href="page2.html"><button class="button button3" > New Customer </button></a></span>
+        </div>
+		<div class="container-fluid">
+			</br></br>
+			
+		<h4>Company Name</h4> &emsp;&nbsp;&nbsp;&nbsp;
+		
+		  <input list="companys" name="company" required autofocus>
+			<datalist id="companys">
+			<option value="Ayushi">
+			
+			</datalist>
+		 
+		
+		</div>
+		<div>
+			</br>&nbsp;
+			<h4>Model Name  </h4> &emsp;
+		  &emsp;
+      &nbsp;&emsp;<input list="model" name="model" required autofocus>
+		
+      <datalist id="model">
+        {% for fp in final_products %}
+              <option value="{{fp.id}}" >
+        {% endfor %}    
+		  </datalist>
+    &emsp;<br>  <br>
+    &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+    <a  href="/fp/get_components/id"><button class="btn btn-primary"   data-toggle="modal" data-target="#exampleModal" data-whatever="Model Name " style="padding-left:-20px;"  type="submit" >Add Assembly</button></a>
+		</div>
+    
+    <br>
+			<div class="col-md-12">
+              <div class="card card-plain">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title mt-0">Model Name</h4>
+                  <p class="card-category">Components</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead class="">
+                        <th>
+                          ID
+                        </th>
+                        <th>
+                          Name
+                        </th>
+                        <th>
+                          Checkbox
+                        </th>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            1
+                          </td>
+                          <td>
+                            BQS
+                          </td>
+                          <td>
+                            <input type="checkbox" name="" value="" style=" zoom: 1.5;"><br>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+      </div>
+
+
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <div class="container-fluid">
+          <nav class="float-left">
+            <ul>
+              <li>
+                <a href="#">
+                  Ved Engineers
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div class="copyright float-right">
+            &copy;
+            <script>
+              document.write(new Date().getFullYear())
+            </script>, made with <i class="material-icons">favorite</i> by
+            <a href="#" target="_blank">AJ Team</a> All rights reserved.
+          </div>
+          <!-- your footer here -->
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+
+</html>

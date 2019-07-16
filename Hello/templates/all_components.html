@@ -1,0 +1,48 @@
+<html>
+
+<body>
+    <h4>All Components List for {{ model }}</h4>
+    <table border="1" width="1500">
+        <tr>
+            <td>Model Name</td>
+            <td>Part Name</td>
+            <td>Part Number</td>
+            <td>Primary Stock Unit</td>
+            <td>Purchase Stock Unit</td>
+            <td>Material</td>
+            <td>type_of_production</td>
+            <td>Cost</td>
+            <td>Drawing</td>
+        </tr>
+        {% for component in components %}
+        <div>
+            <tr>
+
+                
+                    <td>{{ model }}</td>
+                    <td><a href="/fp/get_component_info/{{ component.id }}/">{{ component.Part_name }}</a></td>
+                    <td>{{ component.Part_Number }}</td>
+                    <td>{{ component.Primary_Stock_Unit }}</td>
+                    <td>{{ component.Purchase_Stock_Unit }}</td>
+                    <td>{{ component.Material }}</td>
+                    <td>{{ component.type_of_production }}</td>
+                    <td>{{ component.cost }}</td>
+                    <td>{{ component.document }}</td>
+
+            </tr>
+            {% endfor %}
+    </table>
+
+        <div>
+            <h4><a href="/fp/create_component/{{ final_product_id }}/"> Add More Components </a></h4>
+        </div>
+
+        <div>
+            <h4><a href="/fp/all/"> Done </a></h4>
+        </div>
+
+    </div>
+  
+</body>
+
+</html>

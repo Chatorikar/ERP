@@ -1,0 +1,37 @@
+<html>
+    <body>   
+            <h1>All Components List for {{component}}</h1>
+            <table border="1" width="1500">
+                <tr>
+                    <td>Part Name</td>
+                    <td>Part Number</td>
+                    <td>Primary Stock Unit</td>
+                    <td>Purchase Stock Unit</td>
+                    <td>Material</td>
+                    <td>type_of_production</td>
+                    <td>Cost</td>
+                    <td>Drawing</td>
+                </tr>
+                {% for pro in process %}
+                <div>
+                    <tr>
+                        <!-- td><h2><a href="/fp/get_component_info/{{ comp.id }}/">{{ comp.Model_name }}</a></h2></td -->
+                        <td>{{ pro.name }}</td>
+                        <td>{{ pro.status }}</td>
+                    </tr>
+                {% endfor %}
+            </table>          
+        <h1>Add Process to Component =======> </h1>
+        <div>
+            <form action="/fp/create_process/{{ component.id }}/" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" name="submit" value="Add New Process ">
+            </form>
+            <div>
+                <ul>
+                    <li><a href="/fp/all">Cancel</a></li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

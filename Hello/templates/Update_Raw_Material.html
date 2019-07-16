@@ -1,0 +1,34 @@
+<html>
+    <body>   
+            <h2>All Product List for</h2>
+            <table border="1" width="300">
+                <tr>
+                    <td>Raw Material {{name}} </td>
+                </tr>
+                {% comment %} {% for rm in final_products  %}
+                <div>
+                    <tr>
+
+                        <td>
+                            <h2><a href="/fp/get/{{ fp.id }}/">{{ fp.name }}</a></h2>
+                        </td>
+                    </tr>
+                </div>
+                    {% endfor %} {% endcomment %}
+
+
+            </table>
+
+
+            <h4>Add Compents to Final Product </h4>
+            <div>
+                <form action="/fp/Update_Raw_Material_1/{{instance.id}}/{{component_id.id}}/" method="post"  enctype="multipart/form-data">
+                {% csrf_token %}
+                    {{ form.as_p }} 
+                                
+                    <input type="submit" name="submit" value="Update">
+                    <a href="/fp/all">Cancel</a> 
+                </form>
+            </div>
+    </body>
+</html>

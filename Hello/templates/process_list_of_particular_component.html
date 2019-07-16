@@ -1,0 +1,62 @@
+<html>
+
+<body>
+    <h4>Details of {{ component.Part_Number  }}</h4>
+    <table border="1" width="1500">
+        <tr>
+            <td>Part Number</td>
+            <td>Primary Stock Unit</td>
+            <td>Purchase Stock Unit</td>
+            <td>Material</td>
+            <td>type_of_production</td>
+            <td>Cost</td>
+            <td>Drawing</td>
+        </tr>
+       
+        <div>
+            <tr>
+                    <td>{{ component.Part_Number }}</td>
+                    <td>{{ component.Primary_Stock_Unit }}</td>
+                    <td>{{ component.Purchase_Stock_Unit }}</td>
+                    <td>{{ component.Material }}</td>
+                    <td>{{ component.type_of_production }}</td>
+                    <td>{{ component.cost }}</td>
+                    <td>{{ component.document }}</td>
+            </tr>       
+    </table>
+        <div>
+        <table  border="1" width="500" >
+        <h1> Process to be done ========</h1>
+             {% for process in process_list  %}
+
+            <tr>
+               <td><h2> {{ process.name  }} </h2></td>
+                <td><h2> {{ process.status }} </h2></td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+            <div>
+                <form action="/fp/create_process/{{ component.id }}/" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                    {{ form.as_p }}                   
+                    <input type="submit" name="submit" value="Add Process">
+                    <a href="/fp/all">Cancel</a> 
+                </form>
+            </div>
+
+
+            <div>
+                <input list="Raw_Material" , name="Inventary_ID">
+                    
+                    <datalist id="Raw_Material">
+                    {% for pro in All_Process_List %}
+                                <option value="{{pro.name}}"> 
+                    {% endfor %}    
+                    </datalist>
+        
+                    <input type="submit" name="submit" value="Add Process">            
+            </div>
+    </div> 
+</body>
+
+</html>
