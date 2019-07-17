@@ -7,16 +7,144 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-     <script type="text/javascript">
-    function submission() {
-        var b = null;
-        var test = $("#Process_ID").val();
-        {% for pro in All_Process_List %}
-            if("{{ pro.name }}" === test)
-                b = "{{ pro.name }}"
-        {% endfor %}
-       alert(b);
+    <script type="text/javascript">
+    var b = null;
+      function submission() {
+          
+          var test = $("#Process_ID").val();
+          {% for pro in All_Process_List %}
+              if("{{ pro.name }}" === test)
+                  b = "{{ pro.name }}"
+          {% endfor %}
+        alert(b);
+      }
+</script>
+<script>
+
+  $(document).ready(function() {
+	
+	$(".button a span").click(function() {
+		var btn = $(this).parent().parent();
+		var loadSVG = btn.children("a").children(".load");
+		var loadBar = btn.children("div").children("span");
+		var checkSVG = btn.children("a").children(".check");
+		
+		btn.children("a").children("span").fadeOut(200, function() {
+			btn.children("a").animate({
+				width: 56	
+			}, 100, function() {
+				loadSVG.fadeIn(300);
+				btn.animate({
+					width: 320	
+				}, 200, function() {
+					btn.children("div").fadeIn(200, function() {
+						loadBar.animate({
+							width: "100%"	
+						}, 2000, function() {
+							loadSVG.fadeOut(200, function() {
+								checkSVG.fadeIn(200, function() {
+									setTimeout(function() {
+										btn.children("div").fadeOut(200, function() {
+											loadBar.width(0);
+											checkSVG.fadeOut(200, function() {
+												btn.children("a").animate({
+													width: 150	
+												});
+												btn.animate({
+													width: 150
+												}, 300, function() {
+													btn.children("a").children("span").fadeIn(200);
+												});
+											});
+										});
+									}, 2000);	
+								});
+							});
+						});
+					});
+				});
+			});
+		});
+		
+	});
+	
+});
+<style>
+@primary: #3f82d7;
+@success: #28e470;
+@light: #d3d7e0;
+
+body {
+	background: #eef0f5;
+	font-family: Arial;	
+	font-size: 14px;
+}
+
+.button {
+  svg {
+    display: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -15px 0 0 -15px;
+    fill: #fff;
+  }
+  div {
+    span {
+      position: absolute;
+      background: @success;
+      height: 4px;
+      left: 0;
+      top: 0;
+      width: 0;
+      display: block;
+      border-radius: 2px;
     }
+    height: 4px;
+    margin: -2px 0 0 0;
+    position: absolute;
+    top: 50%;
+    left: 71px;
+    right: 25px;
+    background: @light;
+    display: none;
+    border-radius: 2px;
+  }
+  a {
+    span {
+      cursor: pointer;
+      display: block;
+    }
+    position: relative;
+    display: block;
+    background: @primary;
+    z-index: 2;
+    line-height: 56px;
+    height: 56px;
+    border-radius: 28px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(170, 185, 200, 0.4);
+  }
+	border-radius: 28px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+	display: block;
+  background: #fff;
+	width: 150px;
+  box-shadow: 0 2px 6px rgba(170, 185, 200, 0.4);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+
+
+</style>
+
+
+
 </script>
 <script type="text/javascript">
 
@@ -49,6 +177,7 @@ $("#modal").trigger('click');
                         <th>Process</th>
                         <th>Description</th>
                         <th>Planned Date</th>
+                         <th>Status</th>
                       </tr>
                       <tr>
                 </thead>
@@ -60,27 +189,18 @@ $("#modal").trigger('click');
                       <div class="btn-group">
                     
                         {{pro.name}}
-                      
-                        {% comment %} <button type="button" class="btn btn-primary datalist-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Choose a Process
-                        </button> {% endcomment %}
-                        
-
-
-
-
-
-
-                        
-
-
-                        
-                          
+                        <td>Description</td>
+                         <td>Date</td>
+                        <td> 
+                          <button type="button" class="btn btn-primary datalist-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Completed
+                          </button>    
+                        </td>
                         </div>
                         {% endfor %}
                       </tr>
+                       
                     </td>
-                    <td></td>
                     <td></td>
                   </tr>
                 </tbody>
