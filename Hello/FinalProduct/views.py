@@ -128,8 +128,8 @@ def create_process(request, component_id=1):
     args['process_list'] = Components.objects.get(
         id=component_id).process_list.all()
     args['All_Process_List'] = Process.objects.all()
-    return render_to_response('Chainsetup.html', args)
-    # return render_to_response('process_list_of_particular_component.html', args)
+    #return render_to_response('Chainsetup.html', args)
+    return render_to_response('process_list_of_particular_component.html', args)
 
 
 def Add_Process_to_Component(request, component_id=1):

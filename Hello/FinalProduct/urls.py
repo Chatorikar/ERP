@@ -49,13 +49,15 @@ urlpatterns = [
 
 
 
-    # path('create_process/', views.get_process_details_paticular_component),
+
+
+
+    #path('create_process/', views.get_process_details_paticular_component),
 
     url(r'^Add_Process_to_Component/(?P<component_id>\d+)/$',
         views.Add_Process_to_Component),
     url(r'^get_porcess_info/(?P<component_id>\d+)/$', views.create_process),
 
-
-
+    
 
 ]
