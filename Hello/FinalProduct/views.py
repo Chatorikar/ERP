@@ -128,8 +128,15 @@ def create_process(request, component_id=1):
     args['process_list'] = Components.objects.get(
         id=component_id).process_list.all()
     args['All_Process_List'] = Process.objects.all()
-    #return render_to_response('Chainsetup.html', args)
-    return render_to_response('process_list_of_particular_component.html', args)
+    args['change_state'] = 0
+    return render_to_response('Chainsetup.html', args)
+    # return render_to_response('process_list_of_particular_component.html', args)
+
+
+def change_process_status(request):
+    print(request.POST)
+    print("]]]]]]]]]]]]]]]]]]]]]]]")
+    return render_to_response('Chainsetup.html')
 
 
 def Add_Process_to_Component(request, component_id=1):
@@ -165,6 +172,7 @@ def Add_Process_to_Component(request, component_id=1):
 def get_components_details(request, component_id=1):
     print(Components.objects.get(id=component_id).Rawmaterial_list)
     return render_to_response('table_Components_all_Details_RM.html', {'component': Components.objects.get(id=component_id),
+
                                                                        'component_id': component_id, 'All_Process': Components.objects.get(id=component_id).process_list.all(),
                                                                        'Raw_Material': Components.objects.get(id=component_id).Rawmaterial_list})
 

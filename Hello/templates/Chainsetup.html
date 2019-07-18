@@ -30,17 +30,7 @@ $(document).ready(function(){
 
 </script>
 <script>
-function complete_process() {
-          
-          var test = $("#Completed").val();
-          {% for pro in process_list %}
-              if("{{ pro.name }}" === test)
-                  b = "{{ pro.name }}"
-          {% endfor %}
-        alert(b);
-      }
 
-</script>
 <script>
 
   $(document).ready(function() {
@@ -93,7 +83,25 @@ function complete_process() {
 });
 
 </script>
-
+<script>
+var b = 0;
+    function myFunction(id) {
+    var x = document.getElementById(id).name;
+    
+    document.getElementById("demo").innerHTML = x;
+    // alert( {{ component.process_list.all}} );
+    {% for pro in process_list %}
+              if("{{ pro.name }}" === x){
+                b = "{{ pro.id }}"
+                  alert(b); 
+                  return b;
+            }
+          {% endfor %}
+        
+   
+    }
+    
+</script>
 <style>
 @primary: #3f82d7;
 @success: #28e470;
@@ -111,7 +119,7 @@ body {
     position: absolute;
     left: 50%;
     top: 50%;
-    margin: -15px 0 0 -15px;
+    margin: -use javascript variable in form django15px 0 0 -15px;
     fill: #fff;
   }
   div {
@@ -204,25 +212,32 @@ $("#modal").trigger('click');
                         <th>Description</th>
                         <th>Planned Date</th>
                         <th>Status</th>
+                        
                       </tr>
                       <tr>
                 </thead>
+                  
+                <form action="/fp/change_process_status/ " method="post"  enctype="multipart/form-data">{% csrf_token %}
+
                   <tbody>
                   {% for pro in process_list %}
                     <tr>
                     <td id="increment-me"></td>
                     <td>
                       <div class="btn-group">
-                    
+                  
                         {{pro.name}}
                         <td>Description</td>
                         <td>Date</td>
                         <td> 
-                        <input type="button" id="myBtn" value="Volvo">
-                          {% comment %} <button onclick="myFunction()" type="button" class="btn btn-primary datalist-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  id="Completed" , name="{{pro.name}}" value="{{pro.name}}">
-                                Completed
+                        <input type="button" onclick="myFunction(id)" id=" {{ pro.id  }}" name= "{{ pro.name  }}" value="{{ pro.name  }}">
+                        {% comment %} <input type="button" id="myBtn" value="Volvo"> {% endcomment %}
+                        {% comment %} <button type="button" onclick="myFunction(id)" id=" {{ pro.id  }}" name= {{ pro.name  }} value="{{ pro.name  }}"  class="btn btn-primary datalist-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                          
                           </button> {% endcomment %}
-                          <input type="button" onclick="myFunction()" id="myBtn" name="myname" value="Try it">    
+                        {% comment %} <td><h2> <input type="button" onclick="myFunction(id)" id=" {{ process.id  }}" name= {{ process.name  }} value="Try it"></h2></td> {% endcomment %}
+
+                          {% comment %} <input type="button" onclick="myFunction()" id="myBtn" name="myname" value="Try it">     {% endcomment %}
                         </td>
                         </div>
                         {% endfor %}
@@ -231,10 +246,15 @@ $("#modal").trigger('click');
                     <td></td>
                   </tr>
                 </tbody>
+                   {% comment %} <input type="submit" name="submit" value="Completed"> {% endcomment %}
+                  <input type="submit" onclick="myFunction(id)" id=" {{ pro.id  }}" name=b value="{{ pro.name  }}">
+
+                    <a href="/fp/all">Cancel</a> 
+                </form>
                 </table>
                  {% comment %} <input type="button" onclick="myFunction()" id="myBtn" name="myname" value="Try it">     {% endcomment %}
                 <div>
-                  <form action="/fp/Add_Process_to_Component/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}{% csrf_token %}
+                  <form action="/fp/Add_Process_to_Component/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}
                       <label for="Process_list">Choose Raw Material</label>
                       <input list="Process_list" , name="Process_ID" id="Process_ID">
               
@@ -260,7 +280,7 @@ $("#modal").trigger('click');
         </div>
       </div>
     </div>
-ss
+
 
 
     <!-- Optional JavaScript -->
@@ -287,5 +307,12 @@ ss
         newCell.appendChild(newText);
       }
     </script>
+
+
+
+
+
+
+
   </body>
 </html>
