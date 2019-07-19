@@ -6,6 +6,8 @@ from .models import *
 from . forms import *
 from django.template.context_processors import csrf
 from copy import deepcopy
+from datetime import datetime
+
 
 # Final Product----------------------------------------
 
@@ -34,6 +36,8 @@ def final_product_list(request):
 def final_product_components_by_id(request, final_product_id=1):
     components = Finalproduct.objects.get(
         id=final_product_id).component_list.all()
+    print("jjjjjjjjjjjjjjjjjjjjjjj")
+    print(components)
     return render_to_response('table_all_components.html', {'components': components, 'final_product_id': final_product_id, 'model': Finalproduct.objects.get(id=final_product_id)})
 
 
@@ -136,31 +140,50 @@ def create_process(request, component_id=1):
 def change_process_status(request, component_id=1):
     # print(request.POST['value'])
     if request.POST:
+        Day = 0  # For Date Purpose
         print(request.POST['name'])
     # print(request.POST.get("id"))
     # print(request.POST.get("value"))
+        Comp_obj = Components.objects.get(id=component_id)
+        print("++++++++++++++++++++++++++++++++++++++")
+        if request.POST['name'] in Comp_obj.Process_list:
+            # for v in Comp_obj.Process_list[request.POST['name']]
+            if Comp_obj.Process_list[request.POST['name']][2] == "Completed":
+                Comp_obj.Process_list[request.POST['name']][2] = "On Going"
+            else:
+                d = Comp_obj.Process_list[request.POST['name']][1]
+                date_format = "%Y-%m-%d"
+                a = datetime.strptime('2019-07-20', date_format)
+                b = datetime.strptime(d, date_format)
+                delta = b - a
+                Day = delta.days
+                Comp_obj.Process_list[request.POST['name']][2] = "Completed"
+
+        Comp_obj.save()
         print(request.POST)
-        pro = Components.objects.get(id=component_id).process_list.get(
-            name=request.POST['name'])
-        pro.status = True
-        pro.save()
+        # pro = Components.objects.get(id=component_id).process_list.get(
+        #     name=request.POST['name'])
+        # pro.status = True
+        # pro.save()
         args = {}
         args.update(csrf(request))
-        name_Process =  request.POST['name']
-        Comp_obj = Components.objects.get(id=component_id)
+        name_Process = request.POST['name']
+        # Comp_obj = Components.objects.get(id=component_id)
         print("/////////////////////////////////////")
         print(Comp_obj)
-        #args.update({'form': form})
+        # args.update({'form': form})
         args.update({'component': Components.objects.get(id=component_id)})
         args['process_list'] = Components.objects.get(
             id=component_id).process_list.all()
         args['All_Process_List'] = Process.objects.all()
-        args['change_state'] = 0
-        #Comp_obj.Process_list[request.POST['name']] = "OK"
-        #Comp_obj.Process_list[name_Process] = [ "Compelted" , "Planned Date"  ,2 ]
-        #Comp_obj.save()
+        args['day'] = Day
+        print("DayDayDayDayDayDayDayDayDayDayDayDayDayDayDay")
+        print(Day)
+        # Comp_obj.Process_list[request.POST['name']] = "OK"
+        # Comp_obj.Process_list[name_Process] = [ "Compelted" , "Planned Date"  ,2 ]
+        # Comp_obj.save()
         return render_to_response('Chainsetup.html', args)
-       
+
         print("]]]]]]]]]]]]]]]]]]]]]]]")
 
         # return render_to_response('Chainsetup.html')
@@ -176,9 +199,19 @@ def Add_Process_to_Component(request, component_id=1):
         Comp_obj = Components.objects.get(id=component_id)
         print(request.POST['Process_ID'])
         print("ppppppppppppppppppppppppppppp")
-        Comp_obj.Process_list[request.POST['Process_ID']]=["Description" , "Planned Date" , "On Going"   ]
+
+        if Comp_obj.Process_list == "":
+            Comp_obj.Process_list = {request.POST['Process_ID']: [
+                "Description", request.POST['Estimated-Date'], "On Going"]}
+        else:
+            Comp_obj.Process_list[request.POST['Process_ID']] = [
+                "Description", request.POST['Estimated-Date'], "On Going"]
         Comp_obj.save()
-            #Process.objects.get(name=request.POST['Process_ID']))
+
+        # Comp_obj.Process_list[request.POST['Process_ID']] = [
+        #     "Description", "Planned Date", "On Going"]
+        # Comp_obj.save()
+        # Process.objects.get(name=request.POST['Process_ID']))
 
         if form.is_valid():
             form.save()
@@ -186,7 +219,7 @@ def Add_Process_to_Component(request, component_id=1):
             # Components.objects.get(id=component_id).process_list.add(
             #     Process.objects.latest('pk'))
             # Will add Recently add new components object from Components Class
-            return HttpResponseRedirect('/fp/Add_Process_to_Component/' + str(component_id))
+            return HttpResponseRedirect('/fp/get_component_info/' + component_id)
     else:
         print("*********else*****")
         form = CreateProcess()
@@ -202,9 +235,31 @@ def Add_Process_to_Component(request, component_id=1):
 
 
 def get_components_details(request, component_id=1):
-    print(Components.objects.get(id=component_id).Rawmaterial_list)
-    return render_to_response('table_Components_all_Details_RM.html', {'component': Components.objects.get(id=component_id),
+    Com_Obj = Components.objects.get(id=component_id)
+    print("mIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+    print(Com_Obj.id)
+    if Com_Obj.Process_list != "":
+        Total_process = len(Com_Obj.Process_list.items())
+        completed = 0
+        process = 0
+        for pro in Com_Obj.Process_list:
+            for status in Com_Obj.Process_list[pro]:
+                if status == "Completed":
+                    completed += 1
 
+        Com_Obj.Progress = round((completed/Total_process)*100)
+        Com_Obj.save()
+
+    else:
+        Com_Obj.Progress = 0
+        Com_Obj.save()
+
+    
+        # print(Comp_Obj.Process_list
+
+    # for progress in Com_Obj.Process_list
+    return render_to_response('table_Components_all_Details_RM.html', {'component': Components.objects.get(id=component_id),
+                                                                       'progress': Com_Obj.Progress,
                                                                        'component_id': component_id, 'All_Process': Components.objects.get(id=component_id).process_list.all(),
                                                                        'Raw_Material': Components.objects.get(id=component_id).Rawmaterial_list})
 
@@ -248,6 +303,7 @@ def Add_Process(request, component_id=1):
             Comp_obj.Rawmaterial_list[raw_material_name] = raw_material_quantity
         Comp_obj.save()
         return HttpResponseRedirect("/fp/get_component_info/" + component_id)
+    return HttpResponseRedirect("/fp/get_component_info/" + component_id)
 
 # Delete Final Product
 

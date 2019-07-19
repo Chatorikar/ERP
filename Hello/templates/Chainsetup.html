@@ -211,7 +211,7 @@ $("#modal").trigger('click');
                         <th>Stage</th>
                         <th>Process</th>
                         <th>Description</th>
-                        <th>Planned Date</th>
+                        <th>Estimated Date</th>
                         <th>Status</th>
                         <th>Status</th>
                         
@@ -231,6 +231,7 @@ $("#modal").trigger('click');
                         {{pro}}
                         
                         {% for status in pro1 %}
+                          
                           <td>{{status}}</td>
                         {% endfor %}
                         
@@ -249,8 +250,9 @@ $("#modal").trigger('click');
                 </table>
                 <div>
                   <form action="/fp/Add_Process_to_Component/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}
-                      <label for="Process_list">Choose Raw Material</label>
-                      <input list="Process_list" , name="Process_ID" id="Process_ID">
+                      <label for="Process_list">Assign Process</label>
+                      <input list="Process_list" , name="Process_ID" id="Process_ID" required>
+
               
               <datalist id="Process_list">
                   {% for pro in All_Process_List %}
@@ -259,8 +261,11 @@ $("#modal").trigger('click');
                           
                   {% endfor %}    
               </datalist>
+              <label for="start">Estimated Date:</label>
+
+              <input type="date"  id="start" name="Estimated-Date"   required>
           {% comment %} <button onclick="myFunction()">Try it</button><br/> {% endcomment %} 
-          <input type="submit" name="submit" onclick="return submission()" id="submit_button" value="Assign Raw Material">
+          <input type="submit" name="submit" id="submit_button" value="Add New Process">
           </form>
               </div>
 

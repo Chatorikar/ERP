@@ -199,8 +199,8 @@
                             <th>Material</th>
                             <th>Production Type</th>
                             <th>Cost</th>
-                            <th>Drawing</th>
-                            <th>Delete</th>
+                           
+                            <th>Progress</th>
                         
                           </thead>
                           
@@ -209,14 +209,25 @@
         
                             <tr style="text-align: center">
                                 <td> <a href="/fp/get_component_info/{{ component.id }}/">{{ component.Part_name }}</a></td>
-                                <td>{{ component.Part_Number }}</td>
+                                <td>{{ component.id }}</td>
                                 <td>{{ component.Primary_Stock_Unit }}</td>
                                 <td>{{ component.Purchase_Stock_Unit }}</td>
                                 <td>{{ component.Material }}</td>
                                 <td>{{ component.type_of_production }}</td>
                                 <td>{{ component.cost }}</td>
-                                <td>{{ component.document }}</td>
-                                
+                                {% if progress != 100 %}
+                              
+                                <td>
+                                  <div class="progress" style=" overflow:hidden;  white-space: nowrap;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow=" {{ component.Progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%; color:red; ">In Progress  {{ progress }}</div>
+                                  </div> 
+                                </td>
+                                {% else %}
+                                  <td>Completed</td>
+                                {% endif %}
+
+
+
                             </tr>
                            
                             
