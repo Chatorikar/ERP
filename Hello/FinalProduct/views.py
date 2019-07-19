@@ -126,7 +126,7 @@ def create_process(request, component_id=1):
     args.update({'form': form})
     args.update({'component': Components.objects.get(id=component_id)})
     args['process_list'] = Components.objects.get(
-        id=component_id).process_list.all()
+        id=component_id).Process_list
     args['All_Process_List'] = Process.objects.all()
     args['change_state'] = 0
     return render_to_response('Chainsetup.html', args)
@@ -146,13 +146,21 @@ def change_process_status(request, component_id=1):
         pro.save()
         args = {}
         args.update(csrf(request))
+        name_Process =  request.POST['name']
+        Comp_obj = Components.objects.get(id=component_id)
+        print("/////////////////////////////////////")
+        print(Comp_obj)
         #args.update({'form': form})
         args.update({'component': Components.objects.get(id=component_id)})
         args['process_list'] = Components.objects.get(
             id=component_id).process_list.all()
         args['All_Process_List'] = Process.objects.all()
         args['change_state'] = 0
+        #Comp_obj.Process_list[request.POST['name']] = "OK"
+        #Comp_obj.Process_list[name_Process] = [ "Compelted" , "Planned Date"  ,2 ]
+        #Comp_obj.save()
         return render_to_response('Chainsetup.html', args)
+       
         print("]]]]]]]]]]]]]]]]]]]]]]]")
 
         # return render_to_response('Chainsetup.html')
@@ -165,8 +173,12 @@ def Add_Process_to_Component(request, component_id=1):
         print(request.POST)
         form = CreateProcess(request.POST, request.FILES)
         form_1 = CreateProcess()
-        Components.objects.get(id=component_id).process_list.add(
-            Process.objects.get(name=request.POST['Process_ID']))
+        Comp_obj = Components.objects.get(id=component_id)
+        print(request.POST['Process_ID'])
+        print("ppppppppppppppppppppppppppppp")
+        Comp_obj.Process_list[request.POST['Process_ID']]=["Description" , "Planned Date" , "On Going"   ]
+        Comp_obj.save()
+            #Process.objects.get(name=request.POST['Process_ID']))
 
         if form.is_valid():
             form.save()
@@ -220,22 +232,22 @@ def Process_List(request):
                               context_instance=RequestContext(request))
 
 
-# def Add_Process(request, component_id=1):
-#     if request.POST:
-#         Comp_obj = Components.objects.get(id=component_id)
-#         Process_name = request.POST["name"]
-#         Process_Date = int(request.POST["date"])
-#         Process_obj = Process.objects.get(name=Process_name)
-#         if Process_name in Comp_obj.Rawmaterial_list:
-#             Comp_obj.Rawmaterial_list[raw_material_name] += raw_material_quantity
-#         elif Comp_obj.Rawmaterial_list == "":
-#             Comp_obj.Rawmaterial_list = {
-#                 Process_name: request.POST["status"]}
-#         else:
-#             print(Comp_obj.Rawmaterial_list)
-#             Comp_obj.Rawmaterial_list[raw_material_name] = raw_material_quantity
-#         Comp_obj.save()
-#         return HttpResponseRedirect("/fp/get_component_info/" + component_id)
+def Add_Process(request, component_id=1):
+    if request.POST:
+        Comp_obj = Components.objects.get(id=component_id)
+        Process_name = request.POST["name"]
+        Process_Date = int(request.POST["date"])
+        Process_obj = Process.objects.get(name=Process_name)
+        if Process_name in Comp_obj.Rawmaterial_list:
+            Comp_obj.Rawmaterial_list[raw_material_name] += raw_material_quantity
+        elif Comp_obj.Rawmaterial_list == "":
+            Comp_obj.Rawmaterial_list = {
+                Process_name: request.POST["status"]}
+        else:
+            print(Comp_obj.Rawmaterial_list)
+            Comp_obj.Rawmaterial_list[raw_material_name] = raw_material_quantity
+        Comp_obj.save()
+        return HttpResponseRedirect("/fp/get_component_info/" + component_id)
 
 # Delete Final Product
 

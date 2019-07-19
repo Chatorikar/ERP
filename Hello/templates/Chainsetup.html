@@ -222,18 +222,21 @@ $("#modal").trigger('click');
                 <form action="/fp/change_process_status/{{ component.id }}/" method="post" id="myform"  enctype="multipart/form-data">{% csrf_token %}
 
                   <tbody>
-                  {% for pro in process_list %}
+                  {% for pro , pro1 in process_list.items %}
                     <tr>
                     <td id="increment-me"></td>
                     <td>
                       <div class="btn-group">
                   
-                        {{pro.name}}
-                        <td>Description</td>
-                        <td>Date</td>
-                        <td> {{pro.status}}</td>
+                        {{pro}}
+                        
+                        {% for status in pro1 %}
+                          <td>{{status}}</td>
+                        {% endfor %}
+                        
+                        
                         <td> 
-                          <input type="submit" onclick="myFunction(id)" id=" {{ pro.id  }}" name= "name" value="{{ pro.name  }}">
+                          <input type="submit" onclick="myFunction(id)" id=" {{pro}}" name= "name" value="{{pro}}">
                         </td>
                         </div>
                         {% endfor %}
