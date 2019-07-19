@@ -58,7 +58,8 @@ urlpatterns = [
         views.Add_Process_to_Component),
     url(r'^get_porcess_info/(?P<component_id>\d+)/$', views.create_process),
 
-    url(r'^change_process_status/$', views.change_process_status),
+    url(r'^change_process_status/(?P<component_id>\d+)/$',
+        views.change_process_status),
 
 
 

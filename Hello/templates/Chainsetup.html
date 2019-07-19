@@ -170,6 +170,7 @@ body {
   box-shadow: 0 2px 6px rgba(170, 185, 200, 0.4);
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+
 }
 
 
@@ -212,12 +213,13 @@ $("#modal").trigger('click');
                         <th>Description</th>
                         <th>Planned Date</th>
                         <th>Status</th>
+                        <th>Status</th>
                         
                       </tr>
                       <tr>
                 </thead>
                   
-                <form action="/fp/change_process_status/ " method="post"  enctype="multipart/form-data">{% csrf_token %}
+                <form action="/fp/change_process_status/{{ component.id }}/" method="post" id="myform"  enctype="multipart/form-data">{% csrf_token %}
 
                   <tbody>
                   {% for pro in process_list %}
@@ -229,30 +231,19 @@ $("#modal").trigger('click');
                         {{pro.name}}
                         <td>Description</td>
                         <td>Date</td>
+                        <td> {{pro.status}}</td>
                         <td> 
-                        <input type="button" onclick="myFunction(id)" id=" {{ pro.id  }}" name= "{{ pro.name  }}" value="{{ pro.name  }}">
-                        {% comment %} <input type="button" id="myBtn" value="Volvo"> {% endcomment %}
-                        {% comment %} <button type="button" onclick="myFunction(id)" id=" {{ pro.id  }}" name= {{ pro.name  }} value="{{ pro.name  }}"  class="btn btn-primary datalist-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                          
-                          </button> {% endcomment %}
-                        {% comment %} <td><h2> <input type="button" onclick="myFunction(id)" id=" {{ process.id  }}" name= {{ process.name  }} value="Try it"></h2></td> {% endcomment %}
-
-                          {% comment %} <input type="button" onclick="myFunction()" id="myBtn" name="myname" value="Try it">     {% endcomment %}
+                          <input type="submit" onclick="myFunction(id)" id=" {{ pro.id  }}" name= "name" value="{{ pro.name  }}">
                         </td>
                         </div>
                         {% endfor %}
-                      </tr>
-                    </td>
-                    <td></td>
-                  </tr>
+                      
                 </tbody>
-                   {% comment %} <input type="submit" name="submit" value="Completed"> {% endcomment %}
-                  <input type="submit" onclick="myFunction(id)" id=" {{ pro.id  }}" name=b value="{{ pro.name  }}">
+                  
 
                     <a href="/fp/all">Cancel</a> 
                 </form>
                 </table>
-                 {% comment %} <input type="button" onclick="myFunction()" id="myBtn" name="myname" value="Try it">     {% endcomment %}
                 <div>
                   <form action="/fp/Add_Process_to_Component/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}
                       <label for="Process_list">Choose Raw Material</label>
@@ -307,12 +298,5 @@ $("#modal").trigger('click');
         newCell.appendChild(newText);
       }
     </script>
-
-
-
-
-
-
-
   </body>
 </html>

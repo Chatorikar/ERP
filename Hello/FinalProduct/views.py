@@ -133,10 +133,30 @@ def create_process(request, component_id=1):
     # return render_to_response('process_list_of_particular_component.html', args)
 
 
-def change_process_status(request):
-    print(request.POST)
-    print("]]]]]]]]]]]]]]]]]]]]]]]")
-    return render_to_response('Chainsetup.html')
+def change_process_status(request, component_id=1):
+    # print(request.POST['value'])
+    if request.POST:
+        print(request.POST['name'])
+    # print(request.POST.get("id"))
+    # print(request.POST.get("value"))
+        print(request.POST)
+        pro = Components.objects.get(id=component_id).process_list.get(
+            name=request.POST['name'])
+        pro.status = True
+        pro.save()
+        args = {}
+        args.update(csrf(request))
+        #args.update({'form': form})
+        args.update({'component': Components.objects.get(id=component_id)})
+        args['process_list'] = Components.objects.get(
+            id=component_id).process_list.all()
+        args['All_Process_List'] = Process.objects.all()
+        args['change_state'] = 0
+        return render_to_response('Chainsetup.html', args)
+        print("]]]]]]]]]]]]]]]]]]]]]]]")
+
+        # return render_to_response('Chainsetup.html')
+    return HttpResponseRedirect('/fp/change_process_status/' + component_id)
 
 
 def Add_Process_to_Component(request, component_id=1):
@@ -198,6 +218,24 @@ def Process_List(request):
 
     return render_to_response('render_country.html', {'form': form},
                               context_instance=RequestContext(request))
+
+
+# def Add_Process(request, component_id=1):
+#     if request.POST:
+#         Comp_obj = Components.objects.get(id=component_id)
+#         Process_name = request.POST["name"]
+#         Process_Date = int(request.POST["date"])
+#         Process_obj = Process.objects.get(name=Process_name)
+#         if Process_name in Comp_obj.Rawmaterial_list:
+#             Comp_obj.Rawmaterial_list[raw_material_name] += raw_material_quantity
+#         elif Comp_obj.Rawmaterial_list == "":
+#             Comp_obj.Rawmaterial_list = {
+#                 Process_name: request.POST["status"]}
+#         else:
+#             print(Comp_obj.Rawmaterial_list)
+#             Comp_obj.Rawmaterial_list[raw_material_name] = raw_material_quantity
+#         Comp_obj.save()
+#         return HttpResponseRedirect("/fp/get_component_info/" + component_id)
 
 # Delete Final Product
 
