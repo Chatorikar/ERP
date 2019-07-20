@@ -3,10 +3,20 @@
 <html lang="en">
 
 <head>
+<style>
+
+.shadow-textarea textarea.form-control::placeholder {
+    font-weight: 300;
+}
+.shadow-textarea textarea.form-control {
+    padding-left: 2px;
+}
+</style>
   <meta charset="utf-8" />
   <link rel="apple-touch-icon" sizes="76x76" href="{% static '../static/img/apple-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static '../static/img/favicon.png' %}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <title>
     Material Dashboard by Creative Tim
   </title>
@@ -97,7 +107,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Assembly List</a>
+            <a class="navbar-brand" href="#pablo">Components List Of {{model.name}}</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -166,71 +176,9 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4>
-                    {% comment %} <button style= " @include transition(.4s);
-	position:absolute;
-	right:50px;
-	bottom:0px;
-	width:90px;
-	height:90px;
-	text-align:center;
-	line-height:60px;
-	border-radius:50%;
-	background-color:#fff;
-	color:#000;
-	font-size:24px;
-	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
-	cursor:pointer;	"><a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button> {% endcomment %}
                     
-                    </h4>
-                  <p class="card-category">Click on assembly to get components</p>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table" style="text-align:center;">
-                          <thead class=" text-primary">
-                            <th>ID</th>
-                            <th> Name</th>
-                            <th>Variation</th>
-                            <th>Status</th>
-                             <th>Delete</th>
-                            
-                          </thead>
-                          
-                          <tbody>
-                          
-                          {% for fp in final_products  %}
-                            <tr>
-                              <td>{{ fp.id }}</td>
-                              <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
-                              <td class="text-primary">0</td>
-                              
-                              {% if fp.Progress != 100 %}
-                                <td style="width:15%;">
-                                 <div class="progress" style=" overflow:hidden;  white-space: nowrap;">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ fp.Progress }}% ; color:#000; margin-right : -100px; " >In Progress  {{ fp.Progress }} %</div>
-                                  </div> 
-                                </td>
-                                {% else %}
-                                  <td>Ready For QC</td>
-                                {% endif %}
-                              {% comment %} <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a> {% endcomment %}
-                            <td><button style="background-color:#FF0000; border: 2px solid black;
-                                                background-color: white;
-                                                color: black;
-                                                padding: 14px 28px;
-                                                font-size: 16px;
-                                                cursor: pointer;
-                                                border-radius:30%;">
-                            <a  class="delete" title="Delete" data-toggle="tooltip" href="/fp/delete_Final_Product/{{fp.id}}"><i class="material-icons">&#xE872;</i></a></button></td>
-                            </tr>
-                        {% endfor %} 
-                        </tbody>
-                    </table>
-                      <div>
-                        <h4>
-                    {% comment %} <button style= " @include transition(.4s);
+                    <h4>
+                    <button style= " @include transition(.4s);
                                     position:absolute;
                                     right:50px;
                                     bottom:0px;
@@ -244,47 +192,95 @@
                                     font-size:24px;
                                     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
                                     cursor:pointer;	">
-                    <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button> {% endcomment %}
+                                    <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button>
                     
-                    </h4><a href="/fp/create_product"> Add More Products </a></h4>
-                    </div>
+                    </h4>
+                  <p class="card-category">Click On Components To Add Process</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                  
+                    <table class="table"  style="text-align: center;">
+                          <thead class=" text-primary" style="text-align: center;">
+                            <th>Stage</th>
+                            <th>Process</th>
+                            <th>Description</th>
+                            <th>Estimated Date</th>
+                            <th>Status</th>
+                            <th>Status</th>
+                          </thead>
+                           <form action="/fp/change_process_status/{{ component.id }}/" method="post" id="myform"  enctype="multipart/form-data">{% csrf_token %}
+                          <tbody>
+                          {% for pro , pro1 in process_list.items %}
+                    <tr>
+                    <td id="increment-me">{{ forloop.counter }}</td>
+                    <td>
+                      <div class="btn-group">
+                  
+                        {{pro}}
+                        
+                        {% for status in pro1 %}
+                          
+                          <td>{{status}}</td>
+                        {% endfor %}
+                        
+                        
+                        <td> 
+                          <input type="submit" onclick="myFunction(id)" id=" {{pro}}" name= "name" value="{{pro}}">
+                        </td>
+                        </div>
+                        {% endfor %}
+                      
+                </tbody>
+                  
+
+                    <a href="/fp/get_component_info/{{component.id}}">Go Back</a> 
+                </form>
+                
+                    </table>
+                      <div>
+                  <form action="/fp/Add_Process_to_Component/{{component.id}}/" id="myform" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                      <label for="Process_list"  style="font-size:100%;">Assign Process</label>
+                      <input list="Process_list" , name="Process_ID" id="Process_ID" required autocomplete="off">
+                      <datalist id="Process_list">
+                        {% for pro in All_Process_List %}                         
+                                <option id={{pro.id}} value="{{pro.name}}">
+                        {% endfor %}    
+                        </datalist>
+                        <br><br>
+                        <label for="start"  style="font-size:100%;">Estimated Date:</label>
+                        <input type="date"  id="start" name="Estimated-Date"   required style="font-size:100%;">
+                          <br><br>
+                          <div class="form-group shadow-textarea " style="width:30%; padding-top:20px;">
+                            <label for="exampleFormControlTextarea6">Description</label>
+                            <input type=textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="2" placeholder="Write Description Here..." name="Description" autocomplete="off">
+                          </div>
+                          <button type="submit" class="btn btn-success" style = "color:white;">Add New Process</button>
+                          <button type="button" class="btn btn-danger" style = "color:white;" ><a href="/fp/get_component_info/{{component.id}}" style="color: white;">Cancel</a></button>
+                      </form>
+                    </div> 
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
+     
+            
 
 
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="Model Name ">Add New Model</button>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-      <h4 class="modal-title" id="exampleModalLabel">Enter Name of New Components</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="control-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-         
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button onclick="model_name()" type="button" class="btn btn-primary" >Send message</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
+
+
+
+ 
+
+
+
 
 
 
@@ -620,8 +616,6 @@
     });
 
 
-
-
   
 
   function model_name()
@@ -629,7 +623,6 @@
     var str = document.getElementById("recipient-name").value;
     alert("value "+str)
   }
-
   </script>
 </body>
 

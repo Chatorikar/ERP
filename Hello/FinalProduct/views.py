@@ -30,7 +30,44 @@ def create_product(request):
 
 
 def final_product_list(request):
+    # Finalproduct_All_Obj = Finalproduct.objects.all()
+    # components = Finalproduct.objects.get(
+        # id=final_product_id).component_list.all()
+    print("jjjjjjjjjjjjjjjjjjjjjjj")
+    progress = 0
     Finalproduct_All_Obj = Finalproduct.objects.all()
+
+    for i in range(Finalproduct.objects.all().count()):
+        progress = 0
+        # progress += Finalproduct_All_Obj[i].Progress
+        fp = Finalproduct_All_Obj[i]
+        # print(Finalproduct_All_Obj[i])
+        for i in fp.component_list.all():
+            progress += i.Progress
+        if fp.component_list.all().count() != 0:
+            fp.Progress = progress/fp.component_list.all().count()
+            fp.save()
+            # print(fp.name)
+            # print(fp.Progress)
+        else:
+            fp.Progress = 0
+            fp.save()
+        # Finalproduct.objects.get(name=i.name).Progress = progress
+
+    # print(progress)
+    # for counter in range(Finalproduct.objects.all().count()):
+    #     components = Finalproduct.objects.get(id=116).component_list.all()
+    #     for comp in components:
+    #         progress += comp.Progress
+
+    # # print(round((progress/components.count())))
+    # if components.count() != 0:
+    #     progress = round((progress/components.count()))
+    #     Finalproduct_Obj = Finalproduct.objects.get(
+    #         id=final_product_id)
+    #     Finalproduct_Obj.Progress = progress
+    #     Finalproduct_Obj.save()
+
     return render_to_response('tables.html', {'final_products': Finalproduct.objects.all()})
 
 
@@ -119,6 +156,7 @@ def components_list_id(request, components_id=1):
 
 
 def create_process(request, component_id=1):
+    Comp_obj = Components.objects.get(id=component_id)
     if request.POST:
         print("*********POST*****")
         print(request.POST)
@@ -135,8 +173,22 @@ def create_process(request, component_id=1):
             # Will add Recently add new components object from Components Class
             return HttpResponseRedirect('/fp/get_component_info/' + str(component_id))
     else:
-        print("*********else*****")
+        print("*********else*************")
         form = CreateProcess()
+    if Comp_obj.Process_list != "":
+        Total_process = len(Comp_obj.Process_list.items())
+        completed = 0
+        process = 0
+        for pro in Comp_obj.Process_list:
+            for status in Comp_obj.Process_list[pro]:
+                if status == "Completed":
+                    completed += 1
+
+        Comp_obj.Progress = round((completed/Total_process)*100)
+        Comp_obj.save()
+    else:
+        Comp_obj.Progress = 0
+        Comp_obj.save()
     args = {}
     args.update(csrf(request))
     args.update({'form': form})
@@ -145,25 +197,21 @@ def create_process(request, component_id=1):
         id=component_id).Process_list
     args['All_Process_List'] = Process.objects.all()
     args['change_state'] = 0
-    return render_to_response('Chainsetup.html', args)
+    return render_to_response('Process_List.html', args)
     # return render_to_response('process_list_of_particular_component.html', args)
 
 
 def change_process_status(request, component_id=1):
-    # print(request.POST['value'])
     if request.POST:
         Day = 0  # For Date Purpose
-        print(request.POST['name'])
-    # print(request.POST.get("id"))
-    # print(request.POST.get("value"))
         Comp_obj = Components.objects.get(id=component_id)
-        print("++++++++++++++++++++++++++++++++++++++")
+        # print("++++++++++++++++++++++++++++++++++++++")
         if request.POST['name'] in Comp_obj.Process_list:
-            # for v in Comp_obj.Process_list[request.POST['name']]
+            print("++++++++++++++++++++++++++++++++++++++")
             if Comp_obj.Process_list[request.POST['name']][2] == "Completed":
                 Comp_obj.Process_list[request.POST['name']][2] = "On Going"
+                Comp_obj.save()
             else:
-
                 if Comp_obj.Process_list != "":
                     Total_process = len(Comp_obj.Process_list.items())
                     completed = 0
@@ -188,38 +236,24 @@ def change_process_status(request, component_id=1):
                 Comp_obj.Process_list[request.POST['name']][2] = "Completed"
 
         Comp_obj.save()
-        print(request.POST)
-        # pro = Components.objects.get(id=component_id).process_list.get(
-        #     name=request.POST['name'])
-        # pro.status = True
-        # pro.save()
         args = {}
         args.update(csrf(request))
         name_Process = request.POST['name']
-        # Comp_obj = Components.objects.get(id=component_id)
         print("/////////////////////////////////////")
-        print(Comp_obj)
-        # args.update({'form': form})
         args.update({'component': Components.objects.get(id=component_id)})
         args['process_list'] = Components.objects.get(
             id=component_id).process_list.all()
         args['All_Process_List'] = Process.objects.all()
         args['day'] = Day
-        print("DayDayDayDayDayDayDayDayDayDayDayDayDayDayDay")
         print(Day)
-        # Comp_obj.Process_list[request.POST['name']] = "OK"
-        # Comp_obj.Process_list[name_Process] = [ "Compelted" , "Planned Date"  ,2 ]
-        # Comp_obj.save()
-        return render_to_response('Chainsetup.html', args)
-
         print("]]]]]]]]]]]]]]]]]]]]]]]")
-
-        # return render_to_response('Chainsetup.html')
-    return HttpResponseRedirect('/fp/change_process_status/' + component_id)
+        # return render_to_response('Process_List.html', args)
+        return HttpResponseRedirect('/fp/get_porcess_info/' + str(component_id))
+    return HttpResponseRedirect('/fp/get_porcess_info/' + str(component_id))
 
 
 def Add_Process_to_Component(request, component_id=1):
-    Comp_obj = Components.objects.get(id=component_id)  
+    Comp_obj = Components.objects.get(id=component_id)
     if Comp_obj.Process_list != "":
         Total_process = len(Comp_obj.Process_list.items())
         completed = 0
@@ -240,29 +274,21 @@ def Add_Process_to_Component(request, component_id=1):
         form = CreateProcess(request.POST, request.FILES)
         form_1 = CreateProcess()
         Comp_obj = Components.objects.get(id=component_id)
-        print(request.POST['Process_ID'])
+        print(request.POST)
         print("ppppppppppppppppppppppppppppp")
 
         if Comp_obj.Process_list == "":
             Comp_obj.Process_list = {request.POST['Process_ID']: [
-                "Description", request.POST['Estimated-Date'], "On Going"]}
+                request.POST['Description'], request.POST['Estimated-Date'], "On Going"]}
         else:
             Comp_obj.Process_list[request.POST['Process_ID']] = [
-                "Description", request.POST['Estimated-Date'], "On Going"]
+                request.POST['Description'], request.POST['Estimated-Date'], "On Going"]
         Comp_obj.save()
 
-        # Comp_obj.Process_list[request.POST['Process_ID']] = [
-        #     "Description", "Planned Date", "On Going"]
-        # Comp_obj.save()
-        # Process.objects.get(name=request.POST['Process_ID']))
-
-        if form.is_valid():
-            form.save()
-            print("*********if*****")
-            # Components.objects.get(id=component_id).process_list.add(
-            #     Process.objects.latest('pk'))
-            # Will add Recently add new components object from Components Class
-            return HttpResponseRedirect('/fp/get_component_info/' + component_id)
+        # if form.is_valid():
+        #     form.save()
+        #     print("*********if*****")
+        return HttpResponseRedirect('/fp/get_porcess_info/' + component_id)
     else:
         print("*********else*****")
         form = CreateProcess()
@@ -273,7 +299,8 @@ def Add_Process_to_Component(request, component_id=1):
     args['process_list'] = Components.objects.get(
         id=component_id).process_list.all()
     args['All_Process_List'] = Process.objects.all()
-    return render_to_response('Chainsetup.html', args)
+    return render_to_response('Process_List.html', args)
+    # return render_to_response('Chainsetup.html', args)
     # return render_to_response('process_list_of_particular_component.html', args)
 
 
