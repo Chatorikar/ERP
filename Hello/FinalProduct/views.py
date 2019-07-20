@@ -30,6 +30,7 @@ def create_product(request):
 
 
 def final_product_list(request):
+    Finalproduct_All_Obj = Finalproduct.objects.all()
     return render_to_response('tables.html', {'final_products': Finalproduct.objects.all()})
 
 
@@ -37,7 +38,18 @@ def final_product_components_by_id(request, final_product_id=1):
     components = Finalproduct.objects.get(
         id=final_product_id).component_list.all()
     print("jjjjjjjjjjjjjjjjjjjjjjj")
-    print(components)
+    progress = 0
+    for comp in components:
+        progress += comp.Progress
+
+    # print(round((progress/components.count())))
+    if components.count() != 0:
+        progress = round((progress/components.count()))
+        Finalproduct_Obj = Finalproduct.objects.get(
+            id=final_product_id)
+        Finalproduct_Obj.Progress = progress
+        Finalproduct_Obj.save()
+
     return render_to_response('table_all_components.html', {'components': components, 'final_product_id': final_product_id, 'model': Finalproduct.objects.get(id=final_product_id)})
 
 
@@ -151,6 +163,22 @@ def change_process_status(request, component_id=1):
             if Comp_obj.Process_list[request.POST['name']][2] == "Completed":
                 Comp_obj.Process_list[request.POST['name']][2] = "On Going"
             else:
+
+                if Comp_obj.Process_list != "":
+                    Total_process = len(Comp_obj.Process_list.items())
+                    completed = 0
+                    process = 0
+                    for pro in Comp_obj.Process_list:
+                        for status in Comp_obj.Process_list[pro]:
+                            if status == "Completed":
+                                completed += 1
+
+                    Comp_obj.Progress = round((completed/Total_process)*100)
+                    Comp_obj.save()
+                else:
+                    Comp_obj.Progress = 0
+                    Comp_obj.save()
+
                 d = Comp_obj.Process_list[request.POST['name']][1]
                 date_format = "%Y-%m-%d"
                 a = datetime.strptime('2019-07-20', date_format)
@@ -191,6 +219,21 @@ def change_process_status(request, component_id=1):
 
 
 def Add_Process_to_Component(request, component_id=1):
+    Comp_obj = Components.objects.get(id=component_id)  
+    if Comp_obj.Process_list != "":
+        Total_process = len(Comp_obj.Process_list.items())
+        completed = 0
+        process = 0
+        for pro in Comp_obj.Process_list:
+            for status in Comp_obj.Process_list[pro]:
+                if status == "Completed":
+                    completed += 1
+
+        Comp_obj.Progress = round((completed/Total_process)*100)
+        Comp_obj.save()
+    else:
+        Comp_obj.Progress = 0
+        Comp_obj.save()
     if request.POST:
         print("*********POST*****")
         print(request.POST)
@@ -236,8 +279,6 @@ def Add_Process_to_Component(request, component_id=1):
 
 def get_components_details(request, component_id=1):
     Com_Obj = Components.objects.get(id=component_id)
-    print("mIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-    print(Com_Obj.id)
     if Com_Obj.Process_list != "":
         Total_process = len(Com_Obj.Process_list.items())
         completed = 0
@@ -254,7 +295,6 @@ def get_components_details(request, component_id=1):
         Com_Obj.Progress = 0
         Com_Obj.save()
 
-    
         # print(Comp_Obj.Process_list
 
     # for progress in Com_Obj.Process_list
