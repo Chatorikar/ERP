@@ -6,8 +6,8 @@ from .models import *
 from . forms import *
 from django.template.context_processors import csrf
 from copy import deepcopy
-from datetime import datetime
-
+from datetime import datetime as dt
+import datetime
 
 # Final Product----------------------------------------
 
@@ -203,15 +203,14 @@ def create_process(request, component_id=1):
 
 def change_process_status(request, component_id=1):
     if request.POST:
+        print("Date***************Date******************Date")
+        # print(datetime.today().strftime('%Y-%m-%d'))
         Day = 0  # For Date Purpose
         Comp_obj = Components.objects.get(id=component_id)
         # print("++++++++++++++++++++++++++++++++++++++")
         if request.POST['name'] in Comp_obj.Process_list:
             print("++++++++++++++++++++++++++++++++++++++")
-            if Comp_obj.Process_list[request.POST['name']][2] == "Completed":
-                Comp_obj.Process_list[request.POST['name']][2] = "On Going"
-                Comp_obj.save()
-            else:
+            if Comp_obj.Process_list[request.POST['name']][2] == "None":
                 if Comp_obj.Process_list != "":
                     Total_process = len(Comp_obj.Process_list.items())
                     completed = 0
@@ -226,15 +225,56 @@ def change_process_status(request, component_id=1):
                 else:
                     Comp_obj.Progress = 0
                     Comp_obj.save()
+                
+                # date_format = "%Y-%m-%d"
+                # Expected_Date = Comp_obj.Process_list[request.POST['name']][1] # Expected Date
+                # # Expected_Date_Obj = datetime.datetime.strftime(Expected_Date,'%Y-%m-%d')
 
-                d = Comp_obj.Process_list[request.POST['name']][1]
+                # # print(Expected_Date.strftime("%d/%m/%Y"))
+                # Expected_Date = dt.strptime(Expected_Date, '%Y-%m-%d')
+                # print(Expected_Date)
+                # # date_format = "%Y-%m-%d"
+                # Today_Date = dt.today()
+                # print(Today_Date)
+                #a = datetime.strptime('2019-07-20', date_format)
+                # Today_Date= Today_Date.strftime( "%Y-%m-%d")
+                # a = (datetime.datetime.strftime(Today_Date, date_format).strftime('%Y-%m-%d'))        # Today's Date
+                # b = (datetime.datetime.strftime(str(Expected_Date).split(' ')[0], date_format).strftime('%Y-%m-%d'))
+                # # print(datetime.strptime(Expected_Date, date_format))
+                # delta = b - a
+                # Day = delta.days
+                print("Day------------------")
+                
+                Expected_Date = Comp_obj.Process_list[request.POST['name']][1] # Expected Date
+                Today_Date =dt.today().strftime('%Y-%m-%d')
+                
                 date_format = "%Y-%m-%d"
-                a = datetime.strptime('2019-07-20', date_format)
-                b = datetime.strptime(d, date_format)
-                delta = b - a
-                Day = delta.days
-                Comp_obj.Process_list[request.POST['name']][2] = "Completed"
-
+                
+                
+                print("Expected_Date ==> " + str(Expected_Date) )
+                Today_Date = datetime.datetime.strptime(Today_Date, date_format)
+                print("Today_Date ==> " + str(Today_Date) )
+                
+                Expected_Date = datetime.datetime.strptime(Expected_Date, date_format)
+                print("Expected_Date ==> " + str(Expected_Date) )
+                print(type(Today_Date))
+                print(Today_Date)
+                # Day = Today_Date - Expected_Date
+                # print(Day.date)
+                print(type(Expected_Date))
+                
+                Day = Expected_Date - Today_Date
+                Completion_Time = Day.days
+                Comp_obj.Process_list[request.POST['name']][4] = "Completed"
+                Comp_obj.Process_list[request.POST['name']][2] = dt.today().strftime('%Y-%m-%d')
+                if Completion_Time > 0:
+                    Comp_obj.Process_list[request.POST['name']][3] = ("Done Before " + str(Completion_Time) + " Days")
+                else:
+                    Comp_obj.Process_list[request.POST['name']][3] = ( "Delayed by " + str(abs(Completion_Time)) + " Days" )
+            else:
+                Comp_obj.Process_list[request.POST['name']][2] = "None"
+                Comp_obj.Process_list[request.POST['name']][3] = "None"
+                Comp_obj.Process_list[request.POST['name']][4] = "On Going"
         Comp_obj.save()
         args = {}
         args.update(csrf(request))
@@ -244,8 +284,8 @@ def change_process_status(request, component_id=1):
         args['process_list'] = Components.objects.get(
             id=component_id).process_list.all()
         args['All_Process_List'] = Process.objects.all()
-        args['day'] = Day
-        print(Day)
+        
+        
         print("]]]]]]]]]]]]]]]]]]]]]]]")
         # return render_to_response('Process_List.html', args)
         return HttpResponseRedirect('/fp/get_porcess_info/' + str(component_id))
@@ -279,10 +319,10 @@ def Add_Process_to_Component(request, component_id=1):
 
         if Comp_obj.Process_list == "":
             Comp_obj.Process_list = {request.POST['Process_ID']: [
-                request.POST['Description'], request.POST['Estimated-Date'], "On Going"]}
+                request.POST['Description'], request.POST['Estimated-Date'],"None" ,"None", "On Going"]}
         else:
             Comp_obj.Process_list[request.POST['Process_ID']] = [
-                request.POST['Description'], request.POST['Estimated-Date'], "On Going"]
+                request.POST['Description'], request.POST['Estimated-Date'],"None" ,"None", "On Going"]
         Comp_obj.save()
 
         # if form.is_valid():
