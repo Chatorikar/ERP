@@ -37,7 +37,8 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="./dashboard.html">
+            {% comment %} <a class="nav-link" href="./dashboard.html"> {% endcomment %}
+            <a class="nav-link" href="/fp/all">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -238,8 +239,7 @@
 
           </div>
         </div>
-      </div>
-       <h4>Add Compents to Final Product </h4>
+        <h4>Add Compents to Final Product </h4>
             <div>
                 <form action="/fp/create_product/" method="post"  enctype="multipart/form-data">{% csrf_token %}
                     {{ form }}  
@@ -248,6 +248,8 @@
                     <a href="/fp/all">Cancel</a> 
                 </form>
             </div>
+      </div>
+       
 
 
 {% comment %} <div class="progress">
