@@ -462,7 +462,7 @@ def Inventary(request):
 
 
 def Assign_Raw_Material(request, component_id=1):
-    return render(request, "Select_Quantity.html", {'Inventary': RawMaterial.objects.all(), 'component': Components.objects.get(id=component_id)})
+    return render(request, "select_quantity_template.html", {'Inventary': RawMaterial.objects.all(), 'component': Components.objects.get(id=component_id)})
 
 
 def update_quantity_raw_material(request, component_id=1):
