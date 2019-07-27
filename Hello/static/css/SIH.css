@@ -63,7 +63,7 @@ a {
   text-transform: uppercase;
 }
 .quote .box:hover h1 {
-  color: #fff;
+  color: green;
 }
 
 a:hover {
@@ -85,6 +85,7 @@ a:hover {
 .quote .box.box1:hover ~ .bg {
   opacity: 1;
 }
+
 .quote .box.box2:hover ~ .bg {
   padding: 500px;
   opacity: 1;
@@ -93,7 +94,7 @@ a:hover {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   overflow: hidden;
-  color: #000;
+  color: #fff;
 }
 
 .quote .box.box3:hover ~ .bg {
@@ -123,5 +124,5 @@ a:hover {
   filter: invert(1);
 }
 .quote .box:hover:after {
-  filter: invert(0);
+  /* filter: invert(0); */
 }
