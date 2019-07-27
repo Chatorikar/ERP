@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static '../static/css/SIH_1.css' %}">
+    <title></title>
+  </head>
+  <body>
+  <div class="body_bg" >
+  
+    <div class="quote">
+    	
+    <form action="/convert/" method="get"  enctype="multipart/form-data">{% csrf_token %}
+     <input  type="text" name="search" placeholder="Enter Text To Get Sign" class="ip" autocomplete="off" > 
+     <br><br>
+     
+     <button type="submit" class="btn btn-success" value-"Convert" style="margin-left:390px;  border-radius:5px;">Convert</button>
+      <button type="button" class="btn btn-primary" value-"Convert" style="margin-left: 0px; border-radius:5px;"><a href="../" style="text-decoration: none; color:white;">Back</a></button>
+    </form>
+      
+    </div>
+  </body>
+</html>

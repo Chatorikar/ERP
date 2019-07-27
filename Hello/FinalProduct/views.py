@@ -9,6 +9,29 @@ from copy import deepcopy
 from datetime import datetime as dt
 import datetime
 
+
+
+
+def convert(request):
+    if request.POST:
+        form = CreateProduct(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/fp/all')
+    else:
+        form = CreateProduct()
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+    args.update({'final_products': Finalproduct.objects.all()})
+    args.update({'progress_bar': 50})
+    # create_product.html
+    return render_to_response('table_create_product.html', args)
+    
+
+
+
+
 # Final Product----------------------------------------
 
 

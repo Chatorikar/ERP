@@ -49,6 +49,10 @@ urlpatterns = [
 
 
 
+    url(r'^convert/', views.convert),
+
+
+
 
 
 
