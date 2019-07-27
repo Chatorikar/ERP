@@ -16,7 +16,7 @@ class CreateComponent(forms.ModelForm):
         fields = [
             'Part_name', 'Part_Number', 'Primary_Stock_Unit',
             'Purchase_Stock_Unit', 'Material', 'type_of_production', 'cost',
-            'document', 'Cheack_for_Allocation'
+            'Cheack_for_Allocation'
 
         ]
 
@@ -49,3 +49,15 @@ class ProcessForm(forms.Form):
     )
     Process = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                         choices=OPTIONS)
+
+
+class CreateCustomer(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = '__all__'
+
+
+class CreatePO(forms.ModelForm):
+    class Meta:
+        model = Purchase_Order
+        fields = '__all__'

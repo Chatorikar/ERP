@@ -12,22 +12,7 @@ import datetime
 
 
 
-def convert(request):
-    if request.POST:
-        form = CreateProduct(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/fp/all')
-    else:
-        form = CreateProduct()
-    args = {}
-    args.update(csrf(request))
-    args['form'] = form
-    args.update({'final_products': Finalproduct.objects.all()})
-    args.update({'progress_bar': 50})
-    # create_product.html
-    return render_to_response('table_create_product.html', args)
-    
+
 
 
 
@@ -506,6 +491,42 @@ def update_quantity_raw_material(request, component_id=1):
             Comp_obj.Rawmaterial_list[raw_material_name] = raw_material_quantity
         Comp_obj.save()
         return HttpResponseRedirect("/fp/get_component_info/" + component_id)
+
+
+#-----------------------------New Ordert---------------------------------------------------------------
+
+
+def PO_Status(request , customer_id=1):
+    Customer_Obj = Customer.objects.get(id=customer_id)
+    print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+    print(Purchase_Order.objects.filter(customer_id__in=Customer.objects.filter(id=customer_id))) #get all object Reference by foregin key
+    return render_to_response('PO_List_Of_Customer.html' , {'PO_List' : Purchase_Order.objects.filter(customer_id__in=Customer.objects.filter(id=customer_id)) })
+
+
+
+
+def create_customer(request):
+    if request.POST:
+        form = CreateCustomer(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/fp/customer_list')
+    else:
+        form = CreateCustomer()
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+    args.update({'Customer_List': Customer.objects.all()})
+    # create_product.html
+    return render_to_response('table_create_customer.html', args)
+
+
+def customer_list(request):
+    args = {}
+    args.update({'Customer_List': Customer.objects.all()})
+    print(Customer.objects.all())
+    return render_to_response('Customer_List.html', {'Customer_List': Customer.objects.all()})
+
 
 
 '''

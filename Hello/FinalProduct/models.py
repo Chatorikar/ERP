@@ -1,6 +1,7 @@
 from django.db import models
 from jsonfield import JSONField
 
+
 # Create your models here.
 
 
@@ -69,10 +70,27 @@ class Finalproduct(models.Model):
 
     def __str__(self):
         return self.name
-# class Customer(models.Model)
-#     id=models.AutoField(primary_key=True)
-#     company_name= models.CharField(max_length=50)
-#     email_id=models.CharField(max_length=60)
 
+
+class Customer(models.Model):
+    id = models.AutoField(primary_key=True)
+    company_name = models.CharField(max_length=50,)
+    email_id = models.CharField(max_length=60, default="customer@gmail.com")
+    phone_no = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.company_name
     # def __unicode__(self):
-    #     return
+    #         return
+
+
+class Purchase_Order(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, default="PO")
+    Final_Product_list = models.ManyToManyField(Finalproduct)
+    customer = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="members", null=True, blank=True)
+    Progress = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name

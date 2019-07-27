@@ -22,9 +22,6 @@ admin.autodiscover()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.dashboard),
-    path("main/", views.main),
-    path("convert/", views.convert),
-    path("Text_To_Sign/", views.Text_To_Speech),
     path("our_products", views.our_products),
     path('fp/', include('FinalProduct.urls')),
 

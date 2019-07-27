@@ -11,7 +11,7 @@ import datetime
 
 
 def dashboard(request):
-    return render_to_response('SIH.html')
+    return render_to_response('dashboard.html')
 
 
 def main(request):

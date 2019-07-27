@@ -186,69 +186,49 @@
                       <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button>
                     
                     </h4>
-                  <p class="card-category">Click On Assembly To Get Components</p>
+                  <p class="card-category">Click On Customer Name PO Status</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table">
+                 <table class="table" style="text-align:center;">
                           <thead class=" text-primary">
                             <th>ID</th>
                             <th> Name</th>
-                            <th>Variation</th>
+                            <th>Email</th>
+                            <th>Contact Details</th>
                             
                           </thead>
                           
                            <tbody>
                           
-                          {% for fp in final_products  %}
+                          {% for customer in Customer_List  %}
                             <tr>
-                              <td>{{ fp.id }}</td>
-                              <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
-                              <td class="text-primary">0</td>
+                              <td>{{ customer.id }}</td>
+                              <td><a href="/fp/po_status/{{ customer.id }}/">{{ customer.company_name }}</a></td>
+                              <td class="text-primary">{{ customer.email_id }}</td>
+                              <td class="text-primary">{{ customer.phone_no }}</td>
                               
                             </tr>
-                        {% endfor %} 
+                        {% endfor %}                       
                         </tbody>
                     </table>
-                      <div>
-                        <h4>
-                    <button style= " @include transition(.4s);
-                        position:absolute;
-                        right:50px;
-                        bottom:0px;
-                        width:90px;
-                        height:90px;
-                        text-align:center;
-                        line-height:60px;
-                        border-radius:50%;
-                        background-color:#fff;
-                        color:#000;
-                        font-size:24px;
-                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
-                        cursor:pointer;	">
-                    <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button>
-                    
-                    </h4><a href="/fp/create_product"> Add More Products </a></h4>
-                    
+                      <div>                    
                     </div>
-                  
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
-        <h4>Add Compents to Final Product </h4>
+        <h4>Add New Customer </h4>
             <div>
-                <form action="/fp/create_product/" method="post"  enctype="multipart/form-data">{% csrf_token %}
+                <form action="/fp/create_customer/" method="post"  enctype="multipart/form-data">{% csrf_token %}
                     {{ form }}  
                      {% comment %} <button onclick="model_name()" type="button" class="btn btn-primary" >Send message</button>                {% endcomment %}
                  {% comment %} <input type="submit" name="submit" value="Add Product"> 
                     <a href="/fp/all">Cancel</a>  {% endcomment %}
-                
-                  <button type="submit" name="submit" value="Add Product" class="btn btn-success" style = "color:white;">Save Details</button>
-                  <button type="button" class="btn btn-danger" style = "color:white;" ><a href="/fp/all" style="color: white;">Cancel</a></button>
+                    <button type="submit" name="submit" value="Add Product" class="btn btn-success" style = "color:white;">Save Details</button>
+                    <button type="button" class="btn btn-danger" style = "color:white;" ><a href="/fp/customer_list" style="color: white;">Cancel</a></button>
                 </form>
             </div>
       </div>

@@ -49,7 +49,7 @@ urlpatterns = [
 
 
 
-    url(r'^convert/', views.convert),
+
 
 
 
@@ -64,6 +64,15 @@ urlpatterns = [
 
     url(r'^change_process_status/(?P<component_id>\d+)/$',
         views.change_process_status),
+
+    # -------------------------------------
+
+    url(r'^PO_Status/(?P<customer_id>\d+)/$', views.PO_Status),
+    url(r'^create_customer/', views.create_customer),
+    url(r'^customer_list/', views.customer_list),
+
+
+
 
 
 
