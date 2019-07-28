@@ -60,4 +60,5 @@ class CreateCustomer(forms.ModelForm):
 class CreatePO(forms.ModelForm):
     class Meta:
         model = Purchase_Order
-        fields = '__all__'
+        fields = ['name',
+                  ]

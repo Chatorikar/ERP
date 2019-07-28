@@ -38,13 +38,13 @@ class Process(models.Model):
 
 class Components(models.Model):
     id = models.AutoField(primary_key=True)
-    Model_name = models.CharField(max_length=50, default="")
-    Part_name = models.CharField(max_length=50, default="")
+    Model_name = models.CharField(max_length=50, default="None")
+    Part_name = models.CharField(max_length=50, default="Components-")
     Part_Number = models.IntegerField()
     Primary_Stock_Unit = models.IntegerField()  # char
     Purchase_Stock_Unit = models.IntegerField()  # char
     Material = models.CharField(max_length=50, default="")
-    type_of_production = models.CharField(max_length=50, default="")
+    type_of_production = models.CharField(max_length=50, default="In House")
     cost = models.IntegerField()
     document = models.FileField(upload_to='documents/')
     process_list = models.ManyToManyField(Process)
@@ -65,6 +65,7 @@ class Finalproduct(models.Model):
     name = models.CharField(max_length=50, default="")
     component_list = models.ManyToManyField(Components)
     Progress = models.IntegerField(default=0)
+    In_DataBase = models.BooleanField(default=True)
 
     # desciptions = models.TextField()
 
@@ -74,7 +75,7 @@ class Finalproduct(models.Model):
 
 class Customer(models.Model):
     id = models.AutoField(primary_key=True)
-    company_name = models.CharField(max_length=50,)
+    company_name = models.CharField(max_length=50, default="Customer-")
     email_id = models.CharField(max_length=60, default="customer@gmail.com")
     phone_no = models.IntegerField(default=0)
 
@@ -86,7 +87,7 @@ class Customer(models.Model):
 
 class Purchase_Order(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50, default="PO")
+    name = models.CharField(max_length=50, default="PO-")
     Final_Product_list = models.ManyToManyField(Finalproduct)
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name="members", null=True, blank=True)

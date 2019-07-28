@@ -7,7 +7,6 @@
   <link rel="apple-touch-icon" sizes="76x76" href="{% static '../static/img/apple-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static '../static/img/favicon.png' %}">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <title>
     Material Dashboard by Creative Tim
   </title>
@@ -37,7 +36,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="/fp/all">
+            <a class="nav-link" href="../../">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -98,7 +97,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Components List Of {{model.name}}</a>
+            <a class="navbar-brand" href="#pablo">Assembly List</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -167,8 +166,81 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                    <h4>Purchase Order List of {{Customer_Obj.company_name}}</h4>
                     <h4>
+                    {% comment %} <button style= " @include transition(.4s);
+	position:absolute;
+	right:50px;
+	bottom:0px;
+	width:90px;
+	height:90px;
+	text-align:center;
+	line-height:60px;
+	border-radius:50%;
+	background-color:#fff;
+	color:#000;
+	font-size:24px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
+	cursor:pointer;	"><a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button> {% endcomment %}
+                    
+                    </h4>
+                  <p class="card-category">Click on assembly to get components</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table" style="text-align:center;">
+                          <thead class=" text-primary">
+                            <th>ID</th>
+                            <th> Name</th>
+                            <th>Delete</th>
+                            
+                            
+                          </thead>
+                          
+                          <tbody>
+                         
+                          {% for fp in Purchase_Order_Obj.Final_Product_list.all  %}
+                            <tr>
+                            <td>{{ fp.id }}</td>
+                            <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
+                            
+                         
+
+
+
+                            
+                            {% comment %} <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                            <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a> {% endcomment %}
+                            <td><button style="background-color:#FF0000; border: 2px solid black;
+                                                background-color: white;
+                                                color: black;
+                                                padding: 14px 28px;
+                                                font-size: 16px;
+                                                cursor: pointer;
+                                                border-radius:30%;">
+                            <a  class="delete" title="Delete" data-toggle="tooltip" href="/fp/delete_Final_Product/{{fp.id}}"><i class="material-icons">&#xE872;</i></a></button></td>
+                            </tr>
+                        {% endfor %} 
+                        </tbody>
+                    </table>
+                    <br><br>
+                      <div>
+                      {% comment %} <Error> {% endcomment %}
+                        <form action="/fp/show_selected_final_product_components_list/" method="get"  enctype="multipart/form-data">{% csrf_token %}
+                            <label for = "=Assembly List" style="font-size:20px;"> Select Assembly For {{Purchase_Order_Obj.name}} </label >
+                            <input list = "final_products", name = "final_product_name" id = "final_product_id" autocomplete="off">
+
+                            <datalist id = "final_products" required  >
+                                    {% for fp in All_Final_Product_List %}
+                                        {% comment %} {% if fp.flag %} {% endcomment %}
+                                            <option id = "{{fp.id}}" name ={{fp.id}} >{{fp.name}}</option>
+                                            {% comment %} {% endif %}    {% endcomment %}
+                                    {% endfor %}    
+                            </datalist >
+                        
+                        <input type="submit" name="submit-all"  id="submit_button" value="Add All Components" class="btn btn-success">
+                        <input type="submit" name="submit-select"  id="submit_button" value="Select Components" class="btn btn-success">
+                            
+                     </form>
                     {% comment %} <button style= " @include transition(.4s);
                                     position:absolute;
                                     right:50px;
@@ -183,77 +255,10 @@
                                     font-size:24px;
                                     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
                                     cursor:pointer;	">
-                                    <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button> {% endcomment %}
-                    
-                    </h4>
-                  <p class="card-category">Click On Purchase Order To Add Assembly</p>
-                  
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table">
-                          <thead class=" text-primary" style="text-align: center;">
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Status</th>
-                            
-                        
-                          </thead>
-                          
-                          <tbody>
-                          {% for po in PO_List %}
-        
-                            <tr style="text-align: center">
-                                <td>{{ po.id }}</td>
-                                <td> <a href="/fp/Select_Assembly_to_Po/{{ po.id }}/">{{ po.name }}</a></td>
-                              {% if po.Progress != 100 %}
-                                <td>
-                                  <div class="progress" style=" overflow:hidden;  white-space: nowrap; ">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow=" {{ po.Progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ po.Progress }}%; color:red;">In Progress {{ po.Progress }}%</div>
-                                  </div> 
-                                </td>
-                                {% else %}
-                                  <td>Completed</td>
-                                {% endif %}
-
-
-
-                                 <td><button style="background-color:#FF0000; border: 2px solid black;
-                                                background-color: white;
-                                                color: black;
-                                                padding: 14px 28px;
-                                                font-size: 16px;
-                                                cursor: pointer;
-                                                border-radius:30%;">
-                            <a class="delete" title="Delete" data-toggle="tooltip" href="/fp/delete_component/{{component.id}}/{{model.id}}"><i class="material-icons">&#xE872;</i></a></button></td>
-                            </tr>
-                           
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                      
-                      <div>
-                        <h4>
-                    {% comment %} <button style= " @include transition(.4s);
-                                    position:absolute;
-                                    right:65px;
-                                    bottom:0px;
-                                    width:90px;
-                                    height:90px;
-                                    text-align:center;
-                                    line-height:60px;
-                                    border-radius:50%;
-                                    background-color:#fff;
-                                    color:#000;
-                                    font-size:24px;
-                                    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
-                                    cursor:pointer;	">
                     <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button> {% endcomment %}
-                    
-                        <div>
-                            <h4><a href="/fp/create_purchase_order/{{ customer_id }}/"> Add New Purchase  </a></h4>
-                        </div>
-                    </div>    
+                    <br><br>
+                    <h5><a href="/fp/create_product"> Add More Products </a></h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -261,20 +266,35 @@
           </div>
         </div>
       </div>
-            
 
 
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="Model Name ">Add New Model</button>
 
 
-
-
-
-
-
- 
-
-
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      <h4 class="modal-title" id="exampleModalLabel">Enter Name of New Components</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+         
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button onclick="model_name()" type="button" class="btn btn-primary" >Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -610,6 +630,8 @@
     });
 
 
+
+
   
 
   function model_name()
@@ -617,6 +639,7 @@
     var str = document.getElementById("recipient-name").value;
     alert("value "+str)
   }
+
   </script>
 </body>
 

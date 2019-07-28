@@ -71,8 +71,15 @@ urlpatterns = [
     url(r'^create_customer/', views.create_customer),
     url(r'^customer_list/', views.customer_list),
 
+    url(r'^create_purchase_order/(?P<customer_id>\d+)/$',
+        views.create_purchase_order),
+
+    url(r'^Select_Assembly_to_Po/(?P<po_id>\d+)/$',
+        views.Select_Assembly_to_Po),
 
 
+    url(r'^show_selected_final_product_components_list/$',
+        views.show_selected_final_product_components_list),
 
 
 

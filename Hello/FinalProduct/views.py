@@ -500,7 +500,30 @@ def PO_Status(request , customer_id=1):
     Customer_Obj = Customer.objects.get(id=customer_id)
     print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
     print(Purchase_Order.objects.filter(customer_id__in=Customer.objects.filter(id=customer_id))) #get all object Reference by foregin key
-    return render_to_response('PO_List_Of_Customer.html' , {'PO_List' : Purchase_Order.objects.filter(customer_id__in=Customer.objects.filter(id=customer_id)) })
+    return render_to_response('PO_List_Of_Customer.html' , {'PO_List' : Purchase_Order.objects.filter(customer_id__in=Customer.objects.filter(id=customer_id)) , 'customer_id' : customer_id ,'Customer_Obj':Customer_Obj })
+
+
+def create_purchase_order(request,customer_id=1):
+    if request.POST:
+        form = CreatePO(request.POST)
+        if form.is_valid():
+            print("$$$$$$$$$$$$$$$$$$$$")
+            # print(form['id'].value())
+            form.instance.customer = Customer.objects.get(id=customer_id)
+            #Add Purchase Corresponding to Specific Customer(Foregin Key)
+            print(form.instance.customer)
+            form.save()
+            return HttpResponseRedirect('/fp/PO_Status/' + customer_id)
+    else:
+        form = CreatePO()
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+    args['Customer_Obj'] = Customer.objects.get(id=customer_id)
+    args.update({'PO_List': Purchase_Order.objects.filter(customer_id__in=Customer.objects.filter(id=customer_id))})
+    # create_product.html
+    return render_to_response('table_create_purchase_order.html', args)
+
 
 
 
@@ -522,10 +545,42 @@ def create_customer(request):
 
 
 def customer_list(request):
-    args = {}
-    args.update({'Customer_List': Customer.objects.all()})
     print(Customer.objects.all())
     return render_to_response('Customer_List.html', {'Customer_List': Customer.objects.all()})
+
+
+def Select_Assembly_to_Po(request,po_id=1):
+    Purchase_Order_Obj = (Purchase_Order.objects.get(id=po_id))
+    print(":::::::::::::::::::::::::::::::::::::")
+    args = {}
+    args['Purchase_Order_Obj'] = Purchase_Order_Obj;
+    args['All_Final_Product_List'] = Finalproduct.objects.all()
+    print(Finalproduct.objects.all())
+    return render_to_response('Select_Final_Product_For_PO.html', args)
+
+
+def show_selected_final_product_components_list(request):
+    if request.GET:
+        print("@@@@@@@@@@@@@@@@@@@@")
+        if request.GET['submit-all'] == "Add All Components":
+            print(request.GET)
+            if (Finalproduct.objects.get(name=request.GET['final_product_name'] ).In_DataBase ) == True:
+                print("@@@@@@@@@@@@@@@@@@@@==================")
+                # print(Copy_Of_Final_Product_Obj)
+                Original_Final_Product_Obj = Finalproduct.objects.get(name=request.GET['final_product_name'] )
+                Copy_Of_Final_Product_Obj =deepcopy(Original_Final_Product_Obj)
+                # Copy_Of_Final_Product_Obj.id = (Finalproduct.objects.latest('id').id) + 1
+                Copy_Of_Final_Product_Obj.id = None                
+                Copy_Of_Final_Product_Obj.In_DataBase = False
+                Copy_Of_Final_Product_Obj.save()
+                Copy_Of_Final_Product_Obj.component_list.add(*Original_Final_Product_Obj.component_list.all() ) 
+
+        Finalproduct_Obj_For_Specific_PO = CreateProduct()
+        print(Finalproduct.objects.get(name=request.GET['final_product_id']).component_list.all())
+        return HttpResponse(Finalproduct.objects.get(name=request.GET['final_product_id']).component_list.all())
+    
+
+
 
 
 
