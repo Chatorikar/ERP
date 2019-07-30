@@ -19,6 +19,17 @@ import datetime
 
 # Final Product----------------------------------------
 
+def Final_Product_List_Item_Master(request):
+    return render_to_response('Final_Product_List.html' , { 'final_products' : Finalproduct.objects.all()})
+    
+def Item_Master(request):
+    return render_to_response('Item_Master_On_Click_Page.html')
+
+def Components_List_Item_Master(request):
+    return render_to_response('Components_List.html' , { 'components_list' : Components.objects.all()})
+
+def Inventory_List_Item_Master(request):
+    return render_to_response('Inventory_List_Item_Master.html' , { 'Inventory_List' : RawMaterial.objects.all()})
 
 def create_product(request):
     if request.POST:

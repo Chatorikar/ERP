@@ -26,6 +26,16 @@ from . import views
 urlpatterns = [
 
     path('all/', views.final_product_list, name='product_list'),
+    path('Item_Master/', views.Item_Master, name='Item_Master'),
+    path('Final_Product_List/', views.Final_Product_List_Item_Master,
+         name='Final_Product_List_Item_Master'),
+
+    path('Components_List/', views.Components_List_Item_Master,
+         name='Components_List_Item_Master'),
+
+    path('Inventory_List_Item_Master/', views.Inventory_List_Item_Master,
+         name='Inventory_List_Item_Master'),
+
     path('rm/', views.Inventary, name='Inventary'),
     path('Create_Raw_Material/', views.Create_Raw_Material,
          name='Create_Raw_Material'),
