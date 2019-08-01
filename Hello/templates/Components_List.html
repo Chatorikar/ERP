@@ -19,6 +19,29 @@
   <link href="{% static '../static/css/material-dashboard.css' %}" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="{% static '../static/demo/demo.css' %}" rel="stylesheet" />
+  <script>
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("search_1");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("my-table");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop throtableugh all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
 </head>
 
 <body class="">
@@ -109,7 +132,7 @@
           <div class="collapse navbar-collapse justify-content-end">
             <form class="navbar-form">
               <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
+                <input type="text" value="" class="form-control" placeholder="Search..." id="search_1" onkeyup="myFunction()"  autocomplete="off">
                 <button type="submit" class="btn btn-white btn-round btn-just-icon">
                   <i class="material-icons">search</i>
                   <div class="ripple-container"></div>
@@ -190,7 +213,7 @@
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="my-table">
                           <thead class=" text-primary" style="text-align: center;">
                             <th>Name</th>
                             <th>CID</th>
@@ -274,10 +297,6 @@
       </div>
      
             
-
-
-
-
 
 
 
