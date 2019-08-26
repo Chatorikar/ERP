@@ -36,7 +36,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="href="/">
+            <a class="nav-link" href="http://127.0.0.1:8080/">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -192,20 +192,20 @@
                   <div class="table-responsive">
                     <table class="table" style="text-align:center;">
                           <thead class=" text-primary">
-                            <th>ID</th>
+
                             <th> Name</th>
                             <th>Delete</th>
 
                             {% for fp in All_Final_Product_List  %}
                               {% if fp.In_DataBase  %}
                                   <tr>
-                                    <td>{{ fp.id }}</td>
+
                                     <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
                                     <td class="text-primary">
                                       <!-- <input type="submit" name="submit-all"  id="submit_button" value="" class="btn btn-success">
                                       <input type="submit" name="submit-select"  id="submit_button" value="Select Components" class="btn btn-success"> -->
                                       <button type="submit" name="Select_All" value="{{fp.id}}" class="btn btn-success" >Select All</button>
-                                      <button type="button" name="button" clas="btn btn-success" value="" > <a  href="/fp/Select_Components_For_PO/{{Purchase_Order_objects.id}}/{{fp.id}}">Select Components</button></a>
+                                      <button type="button" name="button" clas="btn btn-success" value="" > <a  href="/fp/Select_Components_For_PO/{{Purchase_Order_objects.id}}/{{fp.id}}">Select Components</a></button>
                                       <!-- <button type="submit" name="Select_All" value="{{fp.id}}" class="btn btn-success" >Particular Components</button> -->
                                     </td>
 
@@ -266,12 +266,12 @@
                   <div class="table-responsive">
                     <table class="table" style="text-align:center;">
                           <thead class=" text-primary">
-                            <th>ID</th>
+
                             <th> Name</th>
                             <th>Delete</th>
                             {% for fp in Purchase_Order_objects.Final_Product_list.all  %}
                               <tr>
-                              <td>{{ fp.id }}</td>
+
                               <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
 
 
@@ -316,7 +316,7 @@
                             </tr>
                         {% endfor %}
                         </tbody>
-                    </table>
+                    </table￼>
                     <br><br>
 
                   </div>
@@ -366,7 +366,7 @@
 
 
 
-
+<!-- 
       <footer class="footer">
         <div class="container-fluid">
           <nav class="float-left">
@@ -401,7 +401,7 @@
             <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
           </div>
         </div>
-      </footer>
+      </footer> -->
     </div>
   </div>
   <div class="fixed-plugin">

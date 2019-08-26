@@ -94,6 +94,9 @@ urlpatterns = [
     url(r'^Select_Components_For_PO/(?P<po_id>\d+)/(?P<final_product_id>\d+)/$',
         views.Select_Components_For_PO),
 
+    url(r'^Assembly_Status/$',
+        views.Assembly_Status),
+
 
 
 ]

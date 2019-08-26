@@ -646,6 +646,11 @@ def Select_Components_For_PO(request , po_id=1 , final_product_id=1):
 
 
 
+def Assembly_Status(request):
+    args = {}
+    args['PO'] = Purchase_Order.objects.all()
+    return render_to_response('Assembly_Status.html' , args)
+
 
 '''
 def index(request):
