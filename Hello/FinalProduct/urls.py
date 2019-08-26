@@ -88,8 +88,11 @@ urlpatterns = [
         views.Select_Assembly_to_Po),
 
 
-    url(r'^show_selected_final_product_components_list/$',
+    url(r'^show_selected_final_product_components_list/(?P<po_id>\d+)/$',
         views.show_selected_final_product_components_list),
+
+    url(r'^Select_Components_For_PO/(?P<po_id>\d+)/(?P<final_product_id>\d+)/$',
+        views.Select_Components_For_PO),
 
 
 

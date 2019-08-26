@@ -8,6 +8,8 @@ from django.template.context_processors import csrf
 from copy import deepcopy
 from datetime import datetime as dt
 import datetime
+from django.forms import model_to_dict
+
 
 
 
@@ -543,7 +545,7 @@ def create_customer(request):
     if request.POST:
         form = CreateCustomer(request.POST)
         if form.is_valid():
-            form.save()
+            form.save() 
             return HttpResponseRedirect('/fp/customer_list')
     else:
         form = CreateCustomer()
@@ -561,36 +563,86 @@ def customer_list(request):
 
 
 def Select_Assembly_to_Po(request,po_id=1):
-    Purchase_Order_Obj = (Purchase_Order.objects.get(id=po_id))
+    Purchase_Order_objects = (Purchase_Order.objects.get(id=po_id))
     print(":::::::::::::::::::::::::::::::::::::")
     args = {}
-    args['Purchase_Order_Obj'] = Purchase_Order_Obj;
+    args['Purchase_Order_objects'] = Purchase_Order_objects
     args['All_Final_Product_List'] = Finalproduct.objects.all()
+    args.update(csrf(request))
     print(Finalproduct.objects.all())
     return render_to_response('Select_Final_Product_For_PO.html', args)
 
 
-def show_selected_final_product_components_list(request):
-    if request.GET:
-        print("@@@@@@@@@@@@@@@@@@@@")
-        if request.GET['submit-all'] == "Add All Components":
-            print(request.GET)
-            if (Finalproduct.objects.get(name=request.GET['final_product_name'] ).In_DataBase ) == True:
-                print("@@@@@@@@@@@@@@@@@@@@==================")
-                # print(Copy_Of_Final_Product_Obj)
-                Original_Final_Product_Obj = Finalproduct.objects.get(name=request.GET['final_product_name'] )
-                Copy_Of_Final_Product_Obj =deepcopy(Original_Final_Product_Obj)
-                # Copy_Of_Final_Product_Obj.id = (Finalproduct.objects.latest('id').id) + 1
-                Copy_Of_Final_Product_Obj.id = None                
-                Copy_Of_Final_Product_Obj.In_DataBase = False
-                Copy_Of_Final_Product_Obj.save()
-                Copy_Of_Final_Product_Obj.component_list.add(*Original_Final_Product_Obj.component_list.all() ) 
-
-        Finalproduct_Obj_For_Specific_PO = CreateProduct()
-        print(Finalproduct.objects.get(name=request.GET['final_product_id']).component_list.all())
-        return HttpResponse(Finalproduct.objects.get(name=request.GET['final_product_id']).component_list.all())
+def show_selected_final_product_components_list(request , po_id=1):
+    if request.POST:
+        print("============")
+        Original_Obj = Finalproduct.objects.get(id=request.POST['Select_All'])
+        kwargs = model_to_dict(Original_Obj , exclude=['id','component_list'])
+        new_obj_for_particular_po = Finalproduct.objects.create(**kwargs)
+        new_obj_for_particular_po.In_DataBase = False
+        new_obj_for_particular_po.Progress = 0
+        for i in Original_Obj.component_list.all():
+            new_component = deepcopy(i)
+            new_component.Progress = 0
+            new_component.id = None
+            new_component.save()
+            new_obj_for_particular_po.component_list.add(new_component)
+            new_obj_for_particular_po.save()
+        Purchase_Order_objects = Purchase_Order.objects.get(id=po_id)
+        Purchase_Order_objects.Final_Product_list.add(new_obj_for_particular_po)
+        Purchase_Order_objects.save()
+        args = {}
+        args['All_Final_Product_List'] = Finalproduct.objects.all()
+        args.update(csrf(request))
+        args['Purchase_Order_objects'] = Purchase_Order_objects
+        # args['Purchase_Order_Obj'] = Purchase_Order_Obj;
+        print("=============================")
+    else:
+        args['All_Final_Product_List'] = Finalproduct.objects.all()
+        # args.update(csrf(request))
+        args['Purchase_Order_objects'] = Purchase_Order_objects
+    return render_to_response('Select_Final_Product_For_PO.html', args)
     
 
+def Select_Components_For_PO(request , po_id=1 , final_product_id=1):
+    if request.POST:
+        print("")
+        print("OK")
+        print("`````````````````````````````")
+        Selected_Components = request.POST.getlist('checks')
+        Original_Obj = Finalproduct.objects.get(id=final_product_id)
+        kwargs = model_to_dict(Original_Obj , exclude=['id','component_list'])
+        new_obj_for_particular_po = Finalproduct.objects.create(**kwargs)
+        new_obj_for_particular_po.In_DataBase = False
+        new_obj_for_particular_po.Progress = 0
+        for i in Selected_Components:
+            New_Components = deepcopy(Components.objects.get(id=i))
+            New_Components.Progress = 0
+            New_Components.id = None
+            New_Components.save()
+            new_obj_for_particular_po.component_list.add(New_Components)
+            new_obj_for_particular_po.save()
+        
+        args = {}
+        args['All_Final_Product_List'] = Finalproduct.objects.all()
+        args.update(csrf(request))
+        Purchase_Obj = Purchase_Order.objects.get(id=po_id)
+        Purchase_Obj.Final_Product_list.add(new_obj_for_particular_po)
+        Purchase_Obj.save()
+        args['Purchase_Order_objects'] = Purchase_Obj
+        
+
+        return render_to_response('Select_Final_Product_For_PO.html', args)
+
+        
+        
+    
+    args = {}
+    args.update(csrf(request))
+    args['Finalproduct_components_list'] = Finalproduct.objects.get(id=final_product_id).component_list.all
+    args['Final_Product_id'] = final_product_id
+    args['Purchase_Order_objects_id'] = po_id
+    return render_to_response('Select_Components_For_PO.html', args)
 
 
 
