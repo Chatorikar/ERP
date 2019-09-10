@@ -39,7 +39,7 @@
           <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active  ">
-            <a class="nav-link" href="../">
+            <a class="nav-link" href="/">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -317,7 +317,7 @@
             <div class="wrap">
 <a href="/fp/Approved_PO_List/">
  <div class="tile">
-   <img src='https://images.unsplash.com/photo-1464054313797-e27fb58e90a9?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=996&q=80'/>
+   <!-- <img src='https://images.unsplash.com/photo-1464054313797-e27fb58e90a9?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=996&q=80'/> -->
    <div class="text">
    <h3>Approved</h3>
    <h4 class="animate-text">{% for po in PO %}
@@ -336,12 +336,12 @@
 </a>
 <a href="/fp/Approved_PO_List/">
  <div class="tile">
-   <img src='https://images.unsplash.com/photo-1458668383970-8ddd3927deed?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1004&q=80'/>
+  <!--  <img src='https://images.unsplash.com/photo-1458668383970-8ddd3927deed?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1004&q=80'/> -->
    <div class="text">
    <h3> On Going </h3>
    <h4 class="animate-text">{% for po in PO %}
      {% if po.Approved == True %}
-     <li> {{po.name}}   &nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{po.Progress}} % </li>
+     <li> {{po.name}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{po.Progress}} % </li>
      {% endif %}
    {% endfor %}</h4>
 
@@ -355,9 +355,9 @@
 </a>
 <a href="fp/Approved_PO_List/">
   <div class="tile">
-    <img src='https://images.unsplash.com/photo-1458668383970-8ddd3927deed?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1004&q=80'/>
+    <!-- <img src='https://images.unsplash.com/photo-1458668383970-8ddd3927deed?dpr=1&auto=format&crop=entropy&fit=crop&w=1500&h=1004&q=80'/> -->
     <div class="text">
-    <h3> On Going </h3>
+    <h3>Completed </h3>
     <h4 class="animate-text">{% for po in PO %}
       {% if po.Progress == 100 %}
       <li> {{po.name}}   &nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{po.Progress}} % </li>

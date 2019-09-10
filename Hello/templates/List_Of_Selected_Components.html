@@ -37,8 +37,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            {% comment %} <a class="nav-link" href="./dashboard.html"> {% endcomment %}
-            <a class="nav-link" href="/fp/all">
+            <a class="nav-link" href="/">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -99,7 +98,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Assembly List</a>
+            <a class="navbar-brand" href="#pablo">Components List Of {{model.name}}</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -168,8 +167,9 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
+                    
                     <h4>
-                    <button style= " @include transition(.4s);
+                    {% comment %} <button style= " @include transition(.4s);
                                     position:absolute;
                                     right:50px;
                                     bottom:0px;
@@ -182,54 +182,65 @@
                                     color:#000;
                                     font-size:24px;
                                     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
-                                    cursor:pointer;	">
-                      <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button>
+                                    cursor:pointer; ">
+                                    <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button> {% endcomment %}
                     
                     </h4>
-                  <p class="card-category">Click On Assembly To Get Components</p>
+                  <p class="card-category">Click On Components To Add Process</p>
                 </div>
                 <div class="card-body">
                   <div class="table-responsive">
-                    <table class="table">
-                          <thead class=" text-primary">
-                            <th>ID</th>
-                            <th> Name</th>
-                            <th>Variation</th>
+                    <table class="table" style="text-align: center;">
+                          <thead class=" text-primary" style="text-align: center;">
+                            <th  style="text-align:center;">Name</th>
+                           <!--  <th>CID</th> -->
+                            <!-- <th>Primary Stock Unit</th>
+                            <th>Purchase Stock Unit</th>
+                            <th>Material</th>
+                            <th>Production Type</th>
+                            <th>Cost</th> -->
                             
+                        
                           </thead>
                           
-                           <tbody>
-                          
-                          {% for fp in final_products  %}
-                            <tr>
-                              <td>{{ fp.id }}</td>
-                              <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
-                              <td class="text-primary">0</td>
-                              
+                          <tbody>
+                          {% for component in components %}
+        
+                            <tr style="text-align: center;">
+                                <td> <a href="/fp/get_component_info/{{ component.id }}/">{{ component.Part_name }}</a></td>
+                                <!-- <td>{{ component.id }}</td> -->
+                                <!-- <td>{{ component.Primary_Stock_Unit }}</td>
+                                <td>{{ component.Purchase_Stock_Unit }}</td>
+                                <td>{{ component.Material }}</td>
+                                <td>{{ component.type_of_production }}</td>
+                                <td>{{ component.cost }}</td> -->
+                                <!--  {% if component.Progress != 100 %}
+                                <td>
+                                  <div class="progress" style=" overflow:hidden;  white-space: nowrap;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow=" {{ component.Progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ component.Progress }}%; color:red; ">In Progress {{ component.Progress }}%</div>
+                                  </div> 
+                                </td>
+                                {% else %}
+                                  <td>Completed</td>
+                                {% endif %} -->
+
+
+
+                                
                             </tr>
-                        {% endfor %} 
+                           
+                            {% endfor %}
                         </tbody>
                     </table>
+                      
                       <div>
-                        <h4>
-                    <button style= " @include transition(.4s);
-                        position:absolute;
-                        right:50px;
-                        bottom:0px;
-                        width:90px;
-                        height:90px;
-                        text-align:center;
-                        line-height:60px;
-                        border-radius:50%;
-                        background-color:#fff;
-                        color:#000;
-                        font-size:24px;
-                        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26), 0 2px 10px 0 rgba(0, 0, 0, 0.22);
-                        cursor:pointer;	">
-                    <a href="/fp/create_product" style="color: #rgba(255, 9, 191, 0)">ADD </a></button>
-                    
-                    </h4><a href="/fp/create_product"> Add More Products </a></h4>
-                    
+                      
+                   
+                    <!-- 
+                        <div>
+                            <h4><a href="/fp/create_component/{{ final_product_id }}/"> Add More Components </a></h4>
+                        </div>
+                     -->
                     </div>
                   
                   </div>
@@ -239,25 +250,9 @@
 
           </div>
         </div>
-        <h4>Add Compents to Final Product </h4>
-            <div>
-                <form action="/fp/create_product/" method="post"  enctype="multipart/form-data">{% csrf_token %}
-                    {{ form }}  
-                     {% comment %} <button onclick="model_name()" type="button" class="btn btn-primary" >Send message</button>                {% endcomment %}
-                 {% comment %} <input type="submit" name="submit" value="Add Product"> 
-                    <a href="/fp/Final_Product_List">Cancel</a>  {% endcomment %}
-                
-                  <button type="submit" name="submit" value="Add Product" class="btn btn-success" style = "color:white;">Save Details</button>
-                  <button type="button" class="btn btn-danger" style = "color:white;" ><a href="/fp/Final_Product_List" style="color: white;">Cancel</a></button>
-                </form>
-            </div>
       </div>
-       
-
-
-{% comment %} <div class="progress">
-  <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress_bar }}%">In Progress {{ progress_bar }}%</div>
-</div> {% endcomment %}
+     
+            
 
 
 
@@ -267,34 +262,7 @@
 
 
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-      <h4 class="modal-title" id="exampleModalLabel">Enter Name of New Components</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="control-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
-          </div>
-         
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button onclick="model_name()" type="button" class="btn btn-primary" >Send message</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
+ 
 
 
 
@@ -429,13 +397,13 @@
   <script src="{% static '../static/js/plugins/jquery.validate.min.js' %}"></script>
   <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
   <script src="{% static '../static/js/plugins/jquery.bootstrap-wizard.js' %}"></script>
-  <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+  <!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
   <script src="{% static '../static/js/plugins/bootstrap-selectpicker.js' %}"></script>
   <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
   <script src="{% static '../static/js/plugins/bootstrap-datetimepicker.min.js' %}"></script>
   <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
   <script src="{% static '../static/js/plugins/jquery.dataTables.min.js' %}"></script>
-  <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+  <!--  Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
   <script src="{% static '../static/js/plugins/bootstrap-tagsinput.js' %}"></script>
   <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
   <script src="{% static '../static/js/plugins/jasny-bootstrap.min.js' %}"></script>

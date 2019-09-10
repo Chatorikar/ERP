@@ -38,7 +38,7 @@ def create_product(request):
         form = CreateProduct(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/fp/all')
+            return HttpResponseRedirect('/fp/Final_Product_List')
     else:
         form = CreateProduct()
     args = {}
@@ -109,6 +109,23 @@ def final_product_components_by_id(request, final_product_id=1):
         Finalproduct_Obj.save()
 
     return render_to_response('table_all_components.html', {'components': components, 'final_product_id': final_product_id, 'model': Finalproduct.objects.get(id=final_product_id)})
+
+def Create_Component(request):
+  
+    if request.POST:
+        form = CreateComponent(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/fp/Components_List/')
+    else:
+        form = CreateComponent()
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+    args.update({ 'components_list' : Components.objects.all()})
+                
+    return render_to_response('Create_Component_To_DataBase.html' , args)    
+
 
 
 # For Componenets
@@ -439,7 +456,7 @@ def Add_Process(request, component_id=1):
 def delete_Final_Product(request, final_product_id=1):
     final_product_obj = get_object_or_404(Finalproduct, id=final_product_id)
     final_product_obj.delete()
-    return HttpResponseRedirect('/fp/all')
+    return HttpResponseRedirect('/fp/Final_Product_List')
 
 #   Delete Delete Component
 
@@ -676,8 +693,26 @@ def Approved_PO_List(request):
      
 
 
-'''
-def index(request):
+
+def get_component_info_of_selected_assembly(request, final_product_id=1):
+    components = Finalproduct.objects.get(
+        id=final_product_id).component_list.all()
+    print("jjjjjjjjjjjjjjjjjjjjjjj")
+    progress = 0
+    for comp in components:
+        progress += comp.Progress
+
+    # print(round((progress/components.count())))
+    if components.count() != 0:
+        progress = round((progress/components.count()))
+        Finalproduct_Obj = Finalproduct.objects.get(
+            id=final_product_id)
+        Finalproduct_Obj.Progress = progress
+        Finalproduct_Obj.save()
+
+    return render_to_response('List_Of_Selected_Components.html', {'components': components, 'final_product_id': final_product_id, 'model': Finalproduct.objects.get(id=final_product_id)})
+
+'''def index(request):
     name = "Prathamesh"
     html = "<html><body> Hi %s This seems to be Worked </body></html>" % name
     return HttpResponse(html)

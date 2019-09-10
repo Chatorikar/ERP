@@ -36,7 +36,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="http://127.0.0.1:8080/">
+           <a class="nav-link" href="/">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -117,7 +117,7 @@
             </form>
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="#pablo">
+              <a class="nav-link" href="/">
                   <i class="material-icons">dashboard</i>
                   <p class="d-lg-none d-md-block">
                     Stats
@@ -272,7 +272,7 @@
                             {% for fp in Purchase_Order_objects.Final_Product_list.all  %}
                               <tr>
 
-                              <td><a href="/fp/get_components/{{ fp.id }}/">{{ fp.name }}</a></td>
+                              <td><a href="/fp/get_component_info_of_selected_assembly/{{ fp.id }}/">{{ fp.name }}</a></td>
 
 
 
