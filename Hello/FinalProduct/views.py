@@ -648,8 +648,32 @@ def Select_Components_For_PO(request , po_id=1 , final_product_id=1):
 
 def Assembly_Status(request):
     args = {}
+    PO_Progress = 0
+    Total_Assembly = 0
     args['PO'] = Purchase_Order.objects.all()
+    print("?/////////////////")
+    for i in Purchase_Order.objects.all():
+        for j in i.Final_Product_list.all():
+            PO_Progress = PO_Progress + (j.Progress)
+            Total_Assembly = Total_Assembly + 1 
+        if(Total_Assembly != 0):
+            i.Progress = round((PO_Progress / Total_Assembly))
+        else:
+            i.Progress = 0
+        Total_Assembly = 0
+        PO_Progress = 0
+        
+            
+        
     return render_to_response('Assembly_Status.html' , args)
+
+
+
+def Approved_PO_List(request):
+    args = {}
+    args['PO_List'] = Purchase_Order.objects.all()
+    return render_to_response('Approved_PO_List.html' , args)
+     
 
 
 '''

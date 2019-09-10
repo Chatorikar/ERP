@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script>
+      window.onload = function()
+      {
+        document.getElementById('content').addEventListener('click',respondOne);
+
+        document.getElementById('content').addEventListener('click',respond);
+
+        document.getElementById('content').addEventListener('click',respondTwo);
+      }
+
+      function respond(e)
+      {
+        console.log('This is content');
+        document.getElementById('content').style.color="red";      }
+
+      function respondOne(e)
+      {
+        console.log('This is content');
+      }
+
+      function respondTwo(e)
+      {
+        console.log('This is Two');
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="content">
+      <p id="one">This is sentence one</p>
+      <p id="two">This is sentence two</p>
+    </div>
+
+  </body>
+</html>

@@ -97,6 +97,8 @@ urlpatterns = [
     url(r'^Assembly_Status/$',
         views.Assembly_Status),
 
+    url(r'^Approved_PO_List/$',
+        views.Approved_PO_List),
 
 
 ]
